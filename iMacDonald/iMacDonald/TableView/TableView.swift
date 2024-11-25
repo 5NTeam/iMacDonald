@@ -2,6 +2,6 @@
 //  TableView.swift
 //  iMacDonald
 //
-//  Created by 유태호 on 11/25/24.
+//  Created by 김손겸 on 11/25/24.
 //
 
