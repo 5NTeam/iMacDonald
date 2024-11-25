@@ -1,6 +1,6 @@
 # 🚔 5NTeam 
 
-## <img src="https://github.com/user-attachments/assets/cf3581a2-c8a9-478e-9478-20908eef52d8" width="40"> iMacDonald
+## <img src="https://github.com/user-attachments/assets/d8170c2c-8429-4464-a4ce-6553d13f7649" width="40"> iMacDonald
 
 **프로젝트 소개**: 햄버거 구매를 위한 모바일 키오스크
 
