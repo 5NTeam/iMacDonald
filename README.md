@@ -1,6 +1,6 @@
 # 🚔 5NTeam 
 
-## ![햄버거 이모지](https://github.com/user-attachments/assets/cfcf34fd-a129-4613-82f5-32e5829e580a) <span style="color: #ff0000">i</span><span style="color: #ffc72c">Mac</span><span style="color: #ff0000">Donald</span>
+## iMacDonald
 
 **프로젝트 소개**: 햄버거 구매를 위한 모바일 키오스크
 
