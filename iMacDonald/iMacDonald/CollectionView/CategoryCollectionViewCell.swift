@@ -21,7 +21,6 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         label.clipsToBounds = true
         label.layer.cornerRadius = 20
         label.sizeToFit()
-        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
@@ -45,4 +44,6 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+    
+//    func
 }

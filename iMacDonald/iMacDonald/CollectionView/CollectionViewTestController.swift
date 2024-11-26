@@ -58,13 +58,12 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
         collectionView?.dataSource = self
         collectionView?.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
         collectionView?.backgroundColor = UIColor.clear
-        collectionView?.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(collectionView!)
         
         collectionView?.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.equalToSuperview()
+            $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview()
             $0.height.equalTo(50)
         }
