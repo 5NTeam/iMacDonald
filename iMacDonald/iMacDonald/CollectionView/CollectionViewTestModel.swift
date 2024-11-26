@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum CollectionViewTestMenuCategory: String {
+enum CollectionViewTestMenuCategory: String, CaseIterable {
     case all
     case burger
     case chicken
