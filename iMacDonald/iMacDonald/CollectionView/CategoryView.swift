@@ -55,9 +55,9 @@ final class CategoryView: UIView {
 }
 
 // 카테고리뷰 클래스의 뷰 요소 세팅 메소드
-extension CategoryView {
+private extension CategoryView {
     /// 로고의 세팅 메소드
-    private func setupLogo() {
+    func setupLogo() {
         titleLogo.text = "iMacDonald"
         titleLogo.font = UIFont.systemFont(ofSize: 30, weight: .black)
         titleLogo.backgroundColor = UIColor.clear
@@ -73,7 +73,7 @@ extension CategoryView {
     }
     
     /// 컬렉션뷰의 세팅 메소드
-    private func setupCollectionView() {
+    func setupCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
