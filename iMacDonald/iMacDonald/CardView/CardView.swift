@@ -92,5 +92,12 @@ class CardView: UIView {
         }
     }
     
+    // 데이터 바인딩해주는 메서드
+    private func configure(title: String, price: Int, image: UIImage?) {
+        titleLabel.text = title
+        priceLabel.text = "\(price)원"
+        imageView.image = image
+    }
+    
     
 }
