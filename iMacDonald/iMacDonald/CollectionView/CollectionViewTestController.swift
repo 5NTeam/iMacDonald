@@ -53,8 +53,8 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 100, height: 50)
-        layout.minimumLineSpacing = 5
+        layout.itemSize = CGSize(width: 80, height: 50)
+        layout.minimumLineSpacing = 10
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView?.delegate = self
@@ -76,6 +76,19 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 6
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as! CategoryCollectionViewCell
+        
+        cell.editCategoryName(indexPath.item)
+        
+        let isSelected: Bool = indexPath.item == currentCategory
+        cell.selectCategory(isSelected)
+        
+//        collectionView.reloadData()
+        
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -117,16 +130,5 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
         label.text = self.state.rawValue
         
         collectionView.reloadData()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as! CategoryCollectionViewCell
-        
-        cell.editCategoryName(indexPath.item)
-        
-        let isSelected: Bool = indexPath.item == currentCategory
-        cell.selectCategory(isSelected)
-        
-        return cell
     }
 }
