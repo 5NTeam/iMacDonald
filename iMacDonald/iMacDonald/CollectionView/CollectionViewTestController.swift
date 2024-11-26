@@ -7,7 +7,8 @@
 
 import UIKit
 
-enum CollectionViewTestMenuCategory {
+enum CollectionViewTestMenuCategory: String {
+    case all
     case burger
     case chicken
     case side
@@ -19,10 +20,31 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
     
     private var collectionView: UICollectionView?
     
+    private var state: CollectionViewTestMenuCategory = .all
+    private let label: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 40, weight: .black)
+        label.textColor = UIColor.black
+        label.textAlignment = .center
+        
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupLabel()
         setupCollectionView()
+    }
+    
+    private func setupLabel() {
+        label.text = self.state.rawValue
+        view.addSubview(label)
+        
+        label.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalToSuperview()
+        }
     }
     
     private func setupCollectionView() {
