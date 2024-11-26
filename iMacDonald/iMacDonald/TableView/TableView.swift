@@ -32,7 +32,7 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
         MenuData(name: "클래식버거", price: 7000, image: "classicburger", category: .burger),
         MenuData(name: "더블버거", price: 8000, image: "doubleburger", category: .burger)
     ]
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -52,6 +52,14 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
             make.height.equalTo(tableView.rowHeight * 3)
         }
     }
-    
-    
+// 테이블 뷰 갯수마다 자동으로 섹션 생성
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dummyBurgers.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCell", for: indexPath)
+        let burger = dummyBurgers[indexPath.row]
+        return cell
+    }
 }
