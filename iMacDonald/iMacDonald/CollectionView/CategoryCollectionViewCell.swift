@@ -41,8 +41,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         categoryLabel.sizeToFit()
         
         categoryLabel.snp.makeConstraints {
-            $0.centerX.equalTo(contentView)
-            $0.centerY.equalTo(contentView)
+            $0.center.equalToSuperview()
             $0.width.equalTo(labelWidthSize + 40)
             $0.height.equalTo(labelHeightSize + 20)
         }

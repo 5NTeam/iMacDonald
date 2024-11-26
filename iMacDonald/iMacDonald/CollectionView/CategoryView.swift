@@ -18,8 +18,8 @@ class CategoryView: UIView {
     override init(frame: CGRect) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 80, height: 50)
-        layout.minimumLineSpacing = 10
+        layout.itemSize = CGSize(width: 90, height: 50)
+        layout.minimumLineSpacing = 5
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(frame: frame)
@@ -30,7 +30,7 @@ class CategoryView: UIView {
     required init?(coder: NSCoder) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 80, height: 50)
+        layout.itemSize = CGSize(width: 90, height: 50)
         layout.minimumLineSpacing = 10
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
