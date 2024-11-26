@@ -35,13 +35,14 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .lightGray
         
         // 테이블 뷰 추가
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "MenuCell")
+        // cell 등록
+        tableView.register(MenuTableViewCell.self, forCellReuseIdentifier: "MenuCell")
         tableView.rowHeight = 80
         
         // 메뉴 항목에 맞춰 높이 자동 수정

@@ -60,7 +60,49 @@ class MenuTableViewCell: UITableViewCell {
         }
         
         // 수량 감소 버튼
-
+        contentView.addSubview(decreaseButton)
+        decreaseButton.setTitle("-", for: .normal)
+        decreaseButton.setTitleColor(.black, for: .normal)
+        decreaseButton.layer.cornerRadius = 16
+        decreaseButton.backgroundColor = .tableViewPrice
+        decreaseButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-100)
+            make.width.height.equalTo(32)
+        }
+        
+        // 수량 라벨
+        contentView.addSubview(quantityLabel)
+        quantityLabel.font = .systemFont(ofSize: 13)
+        quantityLabel.textAlignment = .center
+        quantityLabel.text = "1"
+        quantityLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(decreaseButton.snp.trailing).offset(8)
+            make.width.equalTo(20)
+        }
+        
+        // 수량 증가 버튼
+        contentView.addSubview(increaseButton)
+        increaseButton.setTitle("+", for: .normal)
+        increaseButton.setTitleColor(.black, for: .normal)
+        increaseButton.layer.cornerRadius = 16
+        increaseButton.backgroundColor = .categoryText
+        increaseButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(quantityLabel.snp.trailing).offset(8)
+            make.width.equalTo(32)
+        }
+        
+        // 삭제 버튼
+        contentView.addSubview(deleteButton)
+        deleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
+        deleteButton.tintColor = .gray
+        deleteButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-16)
+            make.width.height.equalTo(32)
+        }
     }
 
 }
