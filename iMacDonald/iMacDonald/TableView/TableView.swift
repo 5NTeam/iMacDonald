@@ -21,17 +21,18 @@ enum MenuCategory {
 struct MenuData {
     var name: String
     var price: Int
-    var image: String
+    var image: UIImage?
     var category: MenuCategory
 }
 
 class MenuDataViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let tableView = UITableView()
-    let dummyBurgers = [
-        MenuData(name: "치즈버거", price: 5000, image: "cheeseburger", category: .burger),
-        MenuData(name: "클래식버거", price: 7000, image: "classicburger", category: .burger),
-        MenuData(name: "더블버거", price: 8000, image: "doubleburger", category: .burger)
+    var dummyBurgers: [MenuData] = [
+        MenuData(name: "치즈버거", price: 16000, image: UIImage(named: "cheeseburger"), category: .burger),
+        MenuData(name: "클래식버거", price: 16000, image: UIImage(named: "classicburger"), category: .burger),
+        MenuData(name: "더블버거", price: 16000, image: UIImage(named: "doubleburger"), category: .burger)
     ]
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,12 +45,15 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "MenuCell")
         tableView.rowHeight = 80
         
+        // 메뉴 항목에 맞춰 높이 수정
+        let tableViewHeight = CGFloat(dummyBurgers.count) * tableView.rowHeight
+        
         // SnapKit으로 레이아웃 설정
         tableView.snp.makeConstraints { make in
             make.top.equalTo(view.snp.centerY).offset(40) // 화면 절반보다 좀 더 아래로
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            make.height.equalTo(tableView.rowHeight * 3)
+            make.bottom.equalTo(tableViewHeight) // 안전영역에 맞게
         }
     }
 // 테이블 뷰 갯수마다 자동으로 섹션 생성
