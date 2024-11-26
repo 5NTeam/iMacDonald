@@ -38,6 +38,20 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
         view.backgroundColor = .white
         
         // 테이블 뷰 추가
+        view.addSubview(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "MenuCell")
+        tableView.rowHeight = 80
         
+        // SnapKit으로 레이아웃 설정
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(view.snp.centerY).offset(40) // 화면 절반보다 좀 더 아래로
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.equalTo(tableView.rowHeight * 3)
+        }
     }
+    
+    
 }
