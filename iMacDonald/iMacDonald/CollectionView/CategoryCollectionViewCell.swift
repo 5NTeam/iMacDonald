@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 class CategoryCollectionViewCell: UICollectionViewCell {
-    let identifier: String = "CategoryCollectionViewCell"
+    static let identifier: String = "CategoryCollectionViewCell"
     
     private let categoryLabel: UILabel = {
         let label = UILabel()
