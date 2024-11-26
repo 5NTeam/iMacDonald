@@ -27,7 +27,13 @@ class CardView: UIView {
     
     // 카드 뷰 UI 설정
     private func setupView() {
-        
+        // 카드뷰 스타일 설정
+        self.layer.cornerRadius = 12
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.2
+        self.layer.shadowOffset = CGSize(width: 0, height: 2)
+        self.layer.shadowRadius = 4
+        self.backgroundColor = .white
     }
     
 }
