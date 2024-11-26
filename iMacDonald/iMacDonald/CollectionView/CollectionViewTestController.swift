@@ -11,9 +11,9 @@ enum CollectionViewTestMenuCategory: String {
     case all
     case burger
     case chicken
+    case vegan
     case side
     case drink
-    case vegan
 }
 
 class CollectionViewTestController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
@@ -85,9 +85,7 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
         
         let isSelected: Bool = indexPath.item == currentCategory
         cell.selectCategory(isSelected)
-        
-//        collectionView.reloadData()
-        
+                
         return cell
     }
     
@@ -117,11 +115,11 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
             self.currentCategory = 1
         case .chicken:
             self.currentCategory = 2
-        case .side:
-            self.currentCategory = 3
-        case .drink:
-            self.currentCategory = 4
         case .vegan:
+            self.currentCategory = 3
+        case .side:
+            self.currentCategory = 4
+        case .drink:
             self.currentCategory = 5
         default:
             break

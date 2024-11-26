@@ -24,7 +24,6 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         label.backgroundColor = UIColor.category
         label.clipsToBounds = true
         label.layer.cornerRadius = 20
-        label.sizeToFit()
         
         return label
     }()
@@ -39,6 +38,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         
         let labelWidthSize = categoryLabel.intrinsicContentSize.width
         let labelHeightSize = categoryLabel.intrinsicContentSize.height
+        categoryLabel.sizeToFit()
         
         categoryLabel.snp.makeConstraints {
             $0.centerX.equalTo(contentView)
@@ -55,6 +55,18 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     /// 인터페이스 빌더로 현재 뷰를 불러올 경우 fatalError를 발생시키지 않고 뷰 인스턴스를 생성
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        categoryLabel.text = "Vegan"
+        categoryLabel.textAlignment = .center
+        categoryLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        categoryLabel.textColor = UIColor.categoryText
+        categoryLabel.backgroundColor = UIColor.category
+        categoryLabel.clipsToBounds = true
+        categoryLabel.layer.cornerRadius = 20
     }
     
     func editCategoryName(_ indexPath: Int) {
