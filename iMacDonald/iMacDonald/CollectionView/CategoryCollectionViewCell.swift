@@ -12,6 +12,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     // 컬렉션뷰에 추가할 때 입력할 매개변수(identifier) 정의
     static let identifier: String = "CategoryCollectionViewCell"
     
+    // 카테고리 이름
     private let categoryList: [String] = ["All", "Burger", "Chicken", "Vegan", "Side", "Drink"]
     
     // 카테고리의 레이블 값 정의

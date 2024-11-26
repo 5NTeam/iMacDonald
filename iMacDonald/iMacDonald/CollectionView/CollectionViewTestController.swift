@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 
+// 테스트용 ViewController
 class CollectionViewTestController: UIViewController {
 
     private let category = CategoryView()

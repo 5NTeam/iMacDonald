@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 
+
+/// 커스텀 카테고리뷰
 class CategoryView: UIView {
     
     private var collectionView: UICollectionView
@@ -15,6 +17,8 @@ class CategoryView: UIView {
     private var state: CollectionViewTestMenuCategory = .all
     private var currentState: Int = 0
     
+    /// 카테고리뷰 생성 이니셜라이저
+    /// - Parameter frame: 카테고리뷰가 가지는 frame = .zero
     override init(frame: CGRect) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -27,6 +31,10 @@ class CategoryView: UIView {
         setupUIConfig()
     }
     
+    /// 필수 생성자
+    /// - Parameter coder: 인터페이스빌더의 엔코딩 값
+    ///
+    /// 인터페이스빌더를 통해 뷰를 호출할 경우 인스턴스 생성
     required init?(coder: NSCoder) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -39,13 +47,16 @@ class CategoryView: UIView {
         setupUIConfig()
     }
     
+    /// 컬렉션 뷰와 로고의 세팅 메소드
     private func setupUIConfig() {
         setupLogo()
         setupCollectionView()
     }
 }
 
+// 카테고리뷰 클래스의 뷰 요소 세팅 메소드
 extension CategoryView {
+    /// 로고의 세팅 메소드
     private func setupLogo() {
         titleLogo.text = "iMacDonald"
         titleLogo.font = UIFont.systemFont(ofSize: 30, weight: .black)
@@ -61,6 +72,7 @@ extension CategoryView {
         }
     }
     
+    /// 컬렉션뷰의 세팅 메소드
     private func setupCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -80,6 +92,7 @@ extension CategoryView {
     }
 }
 
+// 컬렉션뷰의 델리게이트 및 데이터소스 구현부
 extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return CollectionViewTestMenuCategory.allCases.count

@@ -7,6 +7,7 @@
 
 import UIKit
 
+// 테스트용 더미 데이터들
 enum CollectionViewTestMenuCategory: String, CaseIterable {
     case all
     case burger
