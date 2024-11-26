@@ -12,6 +12,8 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     // 컬렉션뷰에 추가할 때 입력할 매개변수(identifier) 정의
     static let identifier: String = "CategoryCollectionViewCell"
     
+    private let menuList: [String] = ["All", "Burger", "Chicken", "Vegan", "Side", "Drink"]
+    
     // 카테고리의 레이블 값 정의
     private let categoryLabel: UILabel = {
         let label = UILabel()
@@ -53,6 +55,10 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     /// 인터페이스 빌더로 현재 뷰를 불러올 경우 fatalError를 발생시키지 않고 뷰 인스턴스를 생성
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    func editCategoryName(_ indexPath: Int) {
+        self.categoryLabel.text = menuList[indexPath]
     }
     
     /// 선택된 카테고리를 강조하는 메소드

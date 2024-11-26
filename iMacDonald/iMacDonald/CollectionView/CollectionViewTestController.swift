@@ -122,6 +122,8 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as! CategoryCollectionViewCell
         
+        cell.editCategoryName(indexPath.item)
+        
         let isSelected: Bool = indexPath.item == currentCategory
         cell.selectCategory(isSelected)
         
