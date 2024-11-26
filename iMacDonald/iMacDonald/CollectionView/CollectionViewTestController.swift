@@ -101,9 +101,9 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
         case 3:
             self.state = .vegan
         case 4:
-            self.state = .drink
-        case 5:
             self.state = .side
+        case 5:
+            self.state = .drink
         default:
             break
         }
@@ -121,8 +121,6 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
             self.currentCategory = 4
         case .drink:
             self.currentCategory = 5
-        default:
-            break
         }
         
         label.text = self.state.rawValue
