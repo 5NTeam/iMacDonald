@@ -9,22 +9,22 @@ import UIKit
 import SnapKit
 
 // 카테고리
-enum MenuCategory {
-    case burger
-    case chicken
-    case side
-    case drink
-    case vegan
-}
-
-// 메뉴 데이터
-struct MenuData {
-    var name: String
-    var price: Int
-    var image: UIImage?
-    var category: MenuCategory
-    var quantity: Int = 1 // 기본값
-}
+//enum MenuCategory {
+//    case burger
+//    case chicken
+//    case side
+//    case drink
+//    case vegan
+//}
+//
+//// 메뉴 데이터
+//struct MenuData {
+//    var name: String
+//    var price: Int
+//    var image: UIImage?
+//    var category: MenuCategory
+//    var quantity: Int = 1 // 기본값
+//}
 
 class MenuDataViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let tableView = UITableView()
@@ -133,7 +133,7 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
     // 긴 눌림 제스처
     @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
         guard let button = gesture.view as? UIButton else { return }
-        let index = button.tag
+        let _index = button.tag
         
         switch gesture.state {
         case .began:
