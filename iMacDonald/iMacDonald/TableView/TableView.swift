@@ -34,6 +34,8 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
         MenuData(name: "더블버거", price: 16000, image: UIImage(named: "doubleburger"), category: .burger,quantity: 1)
     ]
     
+    var increaseTimer: Timer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .lightGray
@@ -42,7 +44,7 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        // cell 등록
+        // 재사용 셀로 등록하는 코드
         tableView.register(MenuTableViewCell.self, forCellReuseIdentifier: "MenuCell") // 셀 식별자
         tableView.rowHeight = 90
         
@@ -53,19 +55,25 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview() // 하단에 맞춤
+            
             //동적으로 테이블뷰 높이를 조정하는 코드
             //make.height.equalTo(tableView.contentSize.height)
-            make.top.equalToSuperview().offset(450)
+            
+            make.top.equalToSuperview().offset(450) // 테이블 뷰 높이 강제 지정. 확인해야해서.
         }
-        tableView.reloadData()
-        tableView.layoutIfNeeded()
+        
+        
+        // 화면에 모든 버거를 삭제할 때 튕기는 현상을 이걸로 막음
+        tableView.reloadData() // 테이블뷰의 데이터를 다시 로드하는 메서드
+        
+        
     }
-    // 테이블 뷰 섹션 내 행 개수
+    // 테이블 뷰 섹션 내 메뉴 항목 수 만큼 행을 생성
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dummyBurgers.count
     }
     
-    // 테이블 뷰 데이터 소스
+    // 테이블 뷰 데이터 소스.
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { // 커스텀 cell 캐스팅
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCell", for: indexPath) as? MenuTableViewCell else {
             return UITableViewCell()
@@ -77,14 +85,19 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
         cell.priceLabel.text = "\(item.price)원"
         cell.quantityLabel.text = "\(item.quantity)"
         
-        // 버튼 액션 설정
-        cell.decreaseButton.tag = indexPath.row
+        // 버튼 액션 연결.
+        cell.decreaseButton.tag = indexPath.row // 각 버튼은 해당하는 행의 인덱스를 tag 속성으로 설정.
         cell.increaseButton.tag = indexPath.row
         cell.deleteButton.tag = indexPath.row
         
+        // 버튼 클릭 시 @objc 메서드 호출
         cell.decreaseButton.addTarget(self, action: #selector(decreaseQuantity), for: .touchUpInside)
         cell.increaseButton.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
         cell.deleteButton.addTarget(self, action: #selector(deleteItem), for: .touchUpInside)
+        
+        // + 버튼에 Long Press 제스처 추가
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        cell.increaseButton.addGestureRecognizer(longPress)
         
         return cell
     }
@@ -103,16 +116,37 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     // 수량 증가
-    @objc func increaseQuantity(sender: UIButton) {
-        let row = sender.tag
-        dummyBurgers[row].quantity += 1
-        tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
-    }
+    @objc func increaseQuantity(_ sender: UIButton) {
+          let index = sender.tag
+          guard index < dummyBurgers.count else { return }
+
+          dummyBurgers[index].quantity += 1
+          tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+      }
     
     // 아이템 삭제
     @objc func deleteItem(sender: UIButton) {
         let row = sender.tag
         dummyBurgers.remove(at: row)
         tableView.reloadData()
+    }
+    // 긴 눌림 제스처
+    @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        guard let button = gesture.view as? UIButton else { return }
+        let index = button.tag
+        
+        switch gesture.state {
+        case .began:
+            // Long Press 시작 시 타이머 시작
+            increaseTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+                self?.increaseQuantity(button)
+            }
+        case .ended, .cancelled:
+            // Long Press 종료 시 타이머 멈춤
+            increaseTimer?.invalidate()
+            increaseTimer = nil
+        default:
+            break
+        }
     }
 }
