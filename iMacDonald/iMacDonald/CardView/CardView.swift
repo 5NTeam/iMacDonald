@@ -31,6 +31,8 @@ class CardView {
         let titleLabel = UILabel()
         titleLabel.text = title
         titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        titleLabel.numberOfLines = 0 // 줄바꿈 허용
+        titleLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         titleLabel.textColor = .black
         cardView.addSubview(titleLabel)
         
