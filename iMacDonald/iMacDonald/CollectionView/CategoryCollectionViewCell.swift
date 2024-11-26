@@ -15,6 +15,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         label.textColor = UIColor.categoryText
+        label.backgroundColor = UIColor.category
         label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -23,7 +24,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = UIColor.category
+        contentView.backgroundColor = UIColor.clear
         contentView.addSubview(categoryLabel)
         
         let labelWidthSize = categoryLabel.intrinsicContentSize.width
