@@ -7,15 +7,6 @@
 
 import UIKit
 
-enum CollectionViewTestMenuCategory: String {
-    case all
-    case burger
-    case chicken
-    case vegan
-    case side
-    case drink
-}
-
 class CollectionViewTestController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     private var collectionView: UICollectionView?
