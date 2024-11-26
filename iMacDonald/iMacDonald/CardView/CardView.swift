@@ -60,6 +60,36 @@ class CardView: UIView {
         //button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         addSubview(button)
         
+        // 제약 조건 설정
+        setupConstraints()
+        
+    }
+    
+    // 카드뷰의 요소 이미지뷰, 메뉴이름, 가격, 버튼 제약 조건 설정 메서드
+    private func setupConstraints() {
+        imageView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalToSuperview().multipliedBy(0.6) // 이미지뷰는 top, leading, trailing가 카드뷰와 같게, 높이는 카드뷰의 0.6
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(10)
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-50)
+        }
+        
+        priceLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(5)
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-50) // 버튼 고려
+            make.bottom.lessThanOrEqualToSuperview().offset(-10)
+        }
+        
+        button.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-10)
+            make.centerY.equalTo(priceLabel.snp.centerY) // 라벨과 정렬
+            make.width.height.equalTo(30) // 버튼 크기
+        }
     }
     
     
