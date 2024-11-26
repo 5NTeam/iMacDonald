@@ -15,13 +15,13 @@
 import UIKit
 
 //카테고리 enum
-enum Categorys: String, Codable {
+enum Categorys: String {
     case all
     case burger
     case chicken
+    case vegan
     case side
     case drink
-    case vegan
 }
 
 // 메뉴 정보를 저장하는 구조체
