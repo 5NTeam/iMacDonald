@@ -24,13 +24,43 @@ class MenuTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI() // 셀의 UI를 설정하는 커스텀 메서드
     }
+    // 이건 위에 초기화 하니까 써야한다고 xcode상에서 fix해줌
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     private func setupUI() {
         // 메뉴 이미지 뷰
+        contentView.addSubview(menuImageView)
+        menuImageView.layer.cornerRadius = 8
+        menuImageView.clipsToBounds = true
+        menuImageView.backgroundColor = .lightGray
+        menuImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(48)
+        }
         
+        // 메뉴 이름 라벨
+        contentView.addSubview(nameLabel)
+        nameLabel.font = .systemFont(ofSize: 16, weight: .bold)
+        nameLabel.text = "메뉴이름"
+        nameLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.equalTo(menuImageView.snp.trailing).offset(12)
+        }
+        
+        // 가격 라벨
+        contentView.addSubview(priceLabel)
+        priceLabel.font = .systemFont(ofSize: 13)
+        priceLabel.textColor = .tableViewPrice
+        priceLabel.text = "16000원"
+        priceLabel.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(5)
+            make.leading.equalTo(nameLabel)
+        }
+        
+        // 수량 감소 버튼
+
     }
 
 }

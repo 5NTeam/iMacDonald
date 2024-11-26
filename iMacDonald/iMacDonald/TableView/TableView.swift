@@ -45,7 +45,7 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.rowHeight = 80
         
         // 메뉴 항목에 맞춰 높이 자동 수정
-        let tableViewHeight = CGFloat(dummyBurgers.count) * tableView.rowHeight
+        //let tableViewHeight = CGFloat(dummyBurgers.count) * tableView.rowHeight
         
         // SnapKit으로 레이아웃 설정
         tableView.snp.makeConstraints { make in
