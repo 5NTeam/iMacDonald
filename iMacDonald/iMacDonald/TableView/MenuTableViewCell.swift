@@ -58,12 +58,23 @@ class MenuTableViewCell: UITableViewCell {
             make.top.equalTo(nameLabel.snp.bottom).offset(5)
             make.leading.equalTo(nameLabel)
         }
+        
+        
         // 스택뷰
         let buttonStackView = UIStackView(arrangedSubviews: [decreaseButton, quantityLabel, increaseButton, deleteButton])
         buttonStackView.axis = .horizontal
         buttonStackView.spacing = 8
         buttonStackView.alignment = .center
         contentView.addSubview(buttonStackView)
+        
+        // 스택뷰 제약
+        buttonStackView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-16)
+            
+        }
+        
+        
         
         // 수량 감소 버튼
         decreaseButton.setTitle("-", for: .normal)
@@ -119,13 +130,5 @@ class MenuTableViewCell: UITableViewCell {
             make.leading.equalTo(increaseButton.snp.trailing).offset(8)
             make.width.height.equalTo(32)
         }
-        
-        // 스택뷰 제약
-        buttonStackView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().offset(-16)
-            
-        }
-        
     }
 }
