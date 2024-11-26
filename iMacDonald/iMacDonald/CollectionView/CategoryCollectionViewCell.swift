@@ -13,9 +13,13 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     private let categoryLabel: UILabel = {
         let label = UILabel()
+        label.text = "Vegan"
+        label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         label.textColor = UIColor.categoryText
         label.backgroundColor = UIColor.category
+        label.clipsToBounds = true
+        label.layer.cornerRadius = 20
         label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -33,8 +37,8 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         categoryLabel.snp.makeConstraints {
             $0.centerX.equalTo(contentView)
             $0.centerY.equalTo(contentView)
-            $0.width.equalTo(labelWidthSize + 20)
-            $0.height.equalTo(labelHeightSize + 10)
+            $0.width.equalTo(labelWidthSize + 40)
+            $0.height.equalTo(labelHeightSize + 20)
         }
     }
     
