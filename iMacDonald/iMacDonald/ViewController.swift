@@ -6,28 +6,40 @@
 //
 
 import UIKit
-
 import SnapKit
 
-class ViewController: UIViewController {
+class MenuViewController: UIViewController {
+    // MARK: - Properties
     private let checkoutView = CheckoutView()
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCheckoutView()
+        setupUI()
+        
+        // 테스트를 위한 예시 데이터
+        updateTotalQuantity(3)
+        updateTotalAmount(12500)
     }
     
-    private func setupCheckoutView() {
+    // MARK: - UI Setup
+    private func setupUI() {
+        view.backgroundColor = .white
+        
         view.addSubview(checkoutView)
         
         checkoutView.snp.makeConstraints { make in
             make.left.right.bottom.equalToSuperview()
-            // 높이는 콘텐츠에 따라 자동으로 조정됩니다
+            make.height.equalTo(140)
         }
-        
-        // 예시: 총 수량과 금액 업데이트
-        checkoutView.updateTotalQuantity(3)
-        checkoutView.updateTotalAmount(12500)
+    }
+    
+    // MARK: - Public Methods
+    func updateTotalQuantity(_ quantity: Int) {
+        checkoutView.updateTotalQuantity(quantity)
+    }
+    
+    func updateTotalAmount(_ amount: Int) {
+        checkoutView.updateTotalAmount(amount)
     }
 }
-
