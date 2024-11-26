@@ -18,7 +18,7 @@ class MenuTableViewCell: UITableViewCell {
     let quantityLabel = UILabel() // 수량
     let increaseButton = UIButton() // 수량 증가 버튼
     let deleteButton = UIButton() // 삭제 버튼
-
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -33,7 +33,7 @@ class MenuTableViewCell: UITableViewCell {
         contentView.addSubview(menuImageView)
         menuImageView.layer.cornerRadius = 8
         menuImageView.clipsToBounds = true
-        menuImageView.backgroundColor = .lightGray
+        menuImageView.backgroundColor = .side
         menuImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.centerY.equalToSuperview()
@@ -42,10 +42,10 @@ class MenuTableViewCell: UITableViewCell {
         
         // 메뉴 이름 라벨
         contentView.addSubview(nameLabel)
-        nameLabel.font = .systemFont(ofSize: 16, weight: .bold)
+        nameLabel.font = .systemFont(ofSize: 18, weight: .medium)
         nameLabel.text = "메뉴이름"
         nameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalTo(menuImageView.snp.top).offset(3.5)
             make.leading.equalTo(menuImageView.snp.trailing).offset(12)
         }
         
@@ -58,21 +58,29 @@ class MenuTableViewCell: UITableViewCell {
             make.top.equalTo(nameLabel.snp.bottom).offset(5)
             make.leading.equalTo(nameLabel)
         }
+        // 스택뷰
+        let buttonStackView = UIStackView(arrangedSubviews: [decreaseButton, quantityLabel, increaseButton, deleteButton])
+        buttonStackView.axis = .horizontal
+        buttonStackView.spacing = 8
+        buttonStackView.alignment = .center
+        contentView.addSubview(buttonStackView)
         
         // 수량 감소 버튼
-        contentView.addSubview(decreaseButton)
         decreaseButton.setTitle("-", for: .normal)
         decreaseButton.setTitleColor(.black, for: .normal)
         decreaseButton.layer.cornerRadius = 16
-        decreaseButton.backgroundColor = .tableViewPrice
+        decreaseButton.backgroundColor = .side
+        decreaseButton.layer.shadowColor = UIColor.black.cgColor
+        decreaseButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        decreaseButton.layer.shadowOpacity = 0.2
+        decreaseButton.layer.shadowRadius = 1
         decreaseButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().offset(-100)
+            make.trailing.equalToSuperview().offset(-110)
             make.width.height.equalTo(32)
         }
         
         // 수량 라벨
-        contentView.addSubview(quantityLabel)
         quantityLabel.font = .systemFont(ofSize: 13)
         quantityLabel.textAlignment = .center
         quantityLabel.text = "1"
@@ -83,11 +91,14 @@ class MenuTableViewCell: UITableViewCell {
         }
         
         // 수량 증가 버튼
-        contentView.addSubview(increaseButton)
         increaseButton.setTitle("+", for: .normal)
         increaseButton.setTitleColor(.black, for: .normal)
         increaseButton.layer.cornerRadius = 16
-        increaseButton.backgroundColor = .categoryText
+        increaseButton.backgroundColor = .side
+        increaseButton.layer.shadowColor = UIColor.black.cgColor
+        increaseButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        increaseButton.layer.shadowOpacity = 0.2
+        increaseButton.layer.shadowRadius = 1
         increaseButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalTo(quantityLabel.snp.trailing).offset(8)
@@ -95,14 +106,26 @@ class MenuTableViewCell: UITableViewCell {
         }
         
         // 삭제 버튼
-        contentView.addSubview(deleteButton)
         deleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
-        deleteButton.tintColor = .gray
+        deleteButton.tintColor = .darkGray
+        deleteButton.layer.cornerRadius = 16
+        deleteButton.backgroundColor = .side
+        deleteButton.layer.shadowColor = UIColor.black.cgColor
+        deleteButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        deleteButton.layer.shadowOpacity = 0.2
+        deleteButton.layer.shadowRadius = 1
         deleteButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().offset(-16)
+            make.leading.equalTo(increaseButton.snp.trailing).offset(8)
             make.width.height.equalTo(32)
         }
+        
+        // 스택뷰 제약
+        buttonStackView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-16)
+            
+        }
+        
     }
-
 }
