@@ -54,7 +54,7 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 100, height: 50)
-        layout.minimumLineSpacing = 10
+        layout.minimumLineSpacing = 5
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView?.delegate = self
