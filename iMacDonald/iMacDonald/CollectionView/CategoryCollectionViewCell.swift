@@ -8,6 +8,6 @@
 import UIKit
 import SnapKit
 
-class CollectionView: UICollectionViewCell {
-    
+class CategoryCollectionViewCell: UICollectionViewCell {
+    let identifier: String = "CategoryCollectionViewCell"
 }
