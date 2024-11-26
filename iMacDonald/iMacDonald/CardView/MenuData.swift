@@ -35,11 +35,20 @@ struct MenuData {
 // 메뉴 리스트를 관리하는 구조체
 struct MenuRepository {
     static let menuList: [MenuData] = [
-        MenuData(name: "아메리카노", price: 4000, image: UIImage(systemName: "cup.and.saucer")),
-        MenuData(name: "카페 라떼", price: 4500, image: UIImage(systemName: "mug")),
-        MenuData(name: "샌드위치", price: 5500, image: UIImage(systemName: "baguette")),
-        MenuData(name: "샐러드", price: 5000, image: UIImage(systemName: "leaf")),
-        MenuData(name: "디저트", price: 3000, image: UIImage(systemName: "cake")),
-        MenuData(name: "스낵", price: 2000, image: UIImage(systemName: "popcorn"))
+        MenuData(name: "치즈버거", price: 4000, image: UIImage(systemName: "cheeseburger"), category: .burger),
+        MenuData(name: "치킨", price: 4500, image: UIImage(systemName: "chicken"), category: .chicken),
+        MenuData(name: "클래식버거", price: 5500, image: UIImage(systemName: "classicburger"), category: .burger),
+        MenuData(name: "콜라", price: 5000, image: UIImage(systemName: "cola"), category: .drink),
+        MenuData(name: "더블버거", price: 3000, image: UIImage(systemName: "doubleburger"), category: .burger),
+        MenuData(name: "햄버거", price: 2000, image: UIImage(systemName: "hamburger"), category: .burger),
+        MenuData(name: "아이스티", price: 5000, image: UIImage(systemName: "icetea"), category: .drink),
+        MenuData(name: "레몬에이드", price: 3000, image: UIImage(systemName: "lemonade"), category: .side),
+        MenuData(name: "너겟", price: 2000, image: UIImage(systemName: "nurget"), category: .side),
+        MenuData(name: "어니언링", price: 5000, image: UIImage(systemName: "onionring"), category: .side),
+        MenuData(name: "감자튀김", price: 3000, image: UIImage(systemName: "potato"), category: .side),
+        MenuData(name: "샐러드버거", price: 2000, image: UIImage(systemName: "saladburger"), category: .burger),
+        MenuData(name: "샐러드", price: 5000, image: UIImage(systemName: "salade"), category: .vegan),
+        MenuData(name: "스님버거", price: 3000, image: UIImage(systemName: "vegeset"), category: .vegan),
+        MenuData(name: "버팔로윙", price: 2000, image: UIImage(systemName: "wing"), category: .side)
     ]
 }
