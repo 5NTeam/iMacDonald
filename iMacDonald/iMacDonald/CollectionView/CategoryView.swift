@@ -10,7 +10,7 @@ import SnapKit
 
 
 /// 커스텀 카테고리뷰
-class CategoryView: UIView {
+final class CategoryView: UIView {
     
     private var collectionView: UICollectionView
     private let titleLogo = UILabel()

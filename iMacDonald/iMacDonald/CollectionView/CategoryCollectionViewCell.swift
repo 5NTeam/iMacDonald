@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class CategoryCollectionViewCell: UICollectionViewCell {
+final class CategoryCollectionViewCell: UICollectionViewCell {
     // 컬렉션뷰에 추가할 때 입력할 매개변수(identifier) 정의
     static let identifier: String = "CategoryCollectionViewCell"
     
