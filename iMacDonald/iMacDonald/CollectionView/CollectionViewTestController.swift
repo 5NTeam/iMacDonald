@@ -19,6 +19,7 @@ enum CollectionViewTestMenuCategory: String {
 class CollectionViewTestController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     private var collectionView: UICollectionView?
+    private var currentCategory: Int = 0
     
     private var state: CollectionViewTestMenuCategory = .all
     private let label: UILabel = {
@@ -76,6 +77,46 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as! CategoryCollectionViewCell
         
+        let isSelected: Bool = indexPath.item == currentCategory
+        cell.selectCategory(isSelected)
+        
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        switch indexPath.item {
+        case 0:
+            self.state = .all
+        case 1:
+            self.state = .burger
+        case 2:
+            self.state = .chicken
+        case 3:
+            self.state = .vegan
+        case 4:
+            self.state = .drink
+        case 5:
+            self.state = .side
+        default:
+            break
+        }
+        
+        switch self.state {
+        case .all:
+            self.currentCategory = 0
+        case .burger:
+            self.currentCategory = 1
+        case .chicken:
+            self.currentCategory = 2
+        case .side:
+            self.currentCategory = 3
+        case .drink:
+            self.currentCategory = 4
+        case .vegan:
+            self.currentCategory = 5
+        }
+        
+        collectionView.reloadData()
     }
 }

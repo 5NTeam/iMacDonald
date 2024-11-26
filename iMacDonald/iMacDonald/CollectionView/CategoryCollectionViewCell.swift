@@ -45,5 +45,10 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         super.init(coder: coder)
     }
     
-//    func
+    func selectCategory(_ isSelected: Bool) {
+        guard isSelected else { return }
+        self.categoryLabel.backgroundColor = UIColor.personal
+        self.categoryLabel.textColor = .white
+        self.categoryLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+    }
 }
