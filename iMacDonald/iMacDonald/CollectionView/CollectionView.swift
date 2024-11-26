@@ -6,7 +6,8 @@
 //
 
 import UIKit
+import SnapKit
 
-class CollectionView: UICollectionView {
+class CollectionView: UICollectionViewCell {
     
 }
