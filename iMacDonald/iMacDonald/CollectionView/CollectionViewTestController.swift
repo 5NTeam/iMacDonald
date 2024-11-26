@@ -34,6 +34,8 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .white
+        
         setupLabel()
         setupCollectionView()
     }
@@ -59,6 +61,8 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
         collectionView?.dataSource = self
         collectionView?.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
         collectionView?.backgroundColor = UIColor.clear
+        collectionView?.showsVerticalScrollIndicator = false
+        collectionView?.showsHorizontalScrollIndicator = false
         
         view.addSubview(collectionView!)
         
@@ -71,16 +75,7 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as! CategoryCollectionViewCell
-        
-        let isSelected: Bool = indexPath.item == currentCategory
-        cell.selectCategory(isSelected)
-        
-        return cell
+        return 6
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -115,8 +110,21 @@ class CollectionViewTestController: UIViewController, UICollectionViewDataSource
             self.currentCategory = 4
         case .vegan:
             self.currentCategory = 5
+        default:
+            break
         }
         
+        label.text = self.state.rawValue
+        
         collectionView.reloadData()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as! CategoryCollectionViewCell
+        
+        let isSelected: Bool = indexPath.item == currentCategory
+        cell.selectCategory(isSelected)
+        
+        return cell
     }
 }
