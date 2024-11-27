@@ -22,8 +22,8 @@ final class CategoryView: UIView {
     override init(frame: CGRect) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 90, height: 50)
-        layout.minimumLineSpacing = 5
+        layout.itemSize = CGSize(width: 100, height: 40)
+        layout.minimumInteritemSpacing = 10
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(frame: frame)
@@ -38,8 +38,8 @@ final class CategoryView: UIView {
     required init?(coder: NSCoder) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 90, height: 50)
-        layout.minimumLineSpacing = 10
+        layout.itemSize = CGSize(width: 100, height: 40)
+        layout.minimumInteritemSpacing = 10
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(coder: coder)
@@ -112,35 +112,22 @@ extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         switch indexPath.item {
-        case 0:
-            self.state = .all
-        case 1:
-            self.state = .burger
-        case 2:
-            self.state = .chicken
-        case 3:
-            self.state = .vegan
-        case 4:
-            self.state = .side
-        case 5:
-            self.state = .drink
-        default:
-            break
+        case 0: self.state = .all
+        case 1: self.state = .burger
+        case 2: self.state = .chicken
+        case 3: self.state = .vegan
+        case 4: self.state = .side
+        case 5: self.state = .drink
+        default: break
         }
         
         switch self.state {
-        case .all:
-            self.currentState = 0
-        case .burger:
-            self.currentState = 1
-        case .chicken:
-            self.currentState = 2
-        case .vegan:
-            self.currentState = 3
-        case .side:
-            self.currentState = 4
-        case .drink:
-            self.currentState = 5
+        case .all: self.currentState = 0
+        case .burger: self.currentState = 1
+        case .chicken: self.currentState = 2
+        case .vegan: self.currentState = 3
+        case .side: self.currentState = 4
+        case .drink: self.currentState = 5
         }
                 
         collectionView.reloadData()
