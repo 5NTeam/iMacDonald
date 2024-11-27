@@ -8,23 +8,23 @@
 import UIKit
 import SnapKit
 
-// 카테고리
-//enum MenuCategory {
-//    case burger
-//    case chicken
-//    case side
-//    case drink
-//    case vegan
-//}
-//
-//// 메뉴 데이터
-//struct MenuData {
-//    var name: String
-//    var price: Int
-//    var image: UIImage?
-//    var category: MenuCategory
-//    var quantity: Int = 1 // 기본값
-//}
+//카테고리
+enum MenuCategory {
+    case burger
+    case chicken
+    case side
+    case drink
+    case vegan
+}
+
+// 메뉴 데이터
+struct MenuData {
+    var name: String
+    var price: Int
+    var image: UIImage?
+    var category: MenuCategory
+    var quantity: Int = 1 // 기본값
+}
 
 class MenuDataViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let tableView = UITableView()
@@ -59,14 +59,8 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
             //동적으로 테이블뷰 높이를 조정하는 코드
             //make.height.equalTo(tableView.contentSize.height)
             
-            make.top.equalToSuperview().offset(450) // 테이블 뷰 높이 강제 지정. 확인해야해서.
+            make.top.equalToSuperview().offset(450) // 테이블 뷰 높이 강제 지정.
         }
-        
-        
-        // 화면에 모든 버거를 삭제할 때 튕기는 현상을 이걸로 막음
-        tableView.reloadData() // 테이블뷰의 데이터를 다시 로드하는 메서드
-        
-        
     }
     // 테이블 뷰 섹션 내 메뉴 항목 수 만큼 행을 생성
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,6 +72,17 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCell", for: indexPath) as? MenuTableViewCell else {
             return UITableViewCell()
         }
+        
+        configureCellButtons(for: cell, at: indexPath)
+        
+        // + 버튼에 Long Press 제스처 추가
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        cell.increaseButton.addGestureRecognizer(longPress)
+        
+        return cell
+    }
+    // 메서드로 정의
+    func configureCellButtons(for cell: MenuTableViewCell, at indexPath: IndexPath) {
         let item = dummyBurgers[indexPath.row]
         
         // 데이터 설정
@@ -85,21 +90,13 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
         cell.priceLabel.text = "\(item.price)원"
         cell.quantityLabel.text = "\(item.quantity)"
         
-        // 버튼 액션 연결.
-        cell.decreaseButton.tag = indexPath.row // 각 버튼은 해당하는 행의 인덱스를 tag 속성으로 설정.
+        cell.decreaseButton.tag = indexPath.row
         cell.increaseButton.tag = indexPath.row
         cell.deleteButton.tag = indexPath.row
         
-        // 버튼 클릭 시 @objc 메서드 호출
         cell.decreaseButton.addTarget(self, action: #selector(decreaseQuantity), for: .touchUpInside)
         cell.increaseButton.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
         cell.deleteButton.addTarget(self, action: #selector(deleteItem), for: .touchUpInside)
-        
-        // + 버튼에 Long Press 제스처 추가
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
-        cell.increaseButton.addGestureRecognizer(longPress)
-        
-        return cell
     }
     
     // 수량 감소
@@ -109,20 +106,20 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
             dummyBurgers[row].quantity -= 1
             if let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) as? MenuTableViewCell {
                 cell.quantityLabel.text = "\(dummyBurgers[row].quantity)"
+            } else {
+                print("수량 없음")
             }
-        } else {
-            print("수량 없음")
         }
     }
     
     // 수량 증가
     @objc func increaseQuantity(_ sender: UIButton) {
-          let index = sender.tag
-          guard index < dummyBurgers.count else { return }
-
-          dummyBurgers[index].quantity += 1
-          tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
-      }
+        let index = sender.tag
+        guard index < dummyBurgers.count else { return }
+        
+        dummyBurgers[index].quantity += 1
+        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+    }
     
     // 아이템 삭제
     @objc func deleteItem(sender: UIButton) {
@@ -132,8 +129,7 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
     }
     // 긴 눌림 제스처
     @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
-        guard let button = gesture.view as? UIButton else { return }
-        let _index = button.tag
+        guard let button = gesture.view as? UIButton, button.tag < dummyBurgers.count else { return } // 강제 언래핑 대신 안전하게 tag로 가져옴
         
         switch gesture.state {
         case .began:
