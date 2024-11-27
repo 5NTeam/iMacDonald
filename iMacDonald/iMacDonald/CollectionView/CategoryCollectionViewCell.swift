@@ -81,5 +81,16 @@ extension CategoryCollectionViewCell {
         self.categoryLabel.backgroundColor = UIColor.personal
         self.categoryLabel.textColor = .white
         self.categoryLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        
+        scaleEffect()
+    }
+    
+    private func scaleEffect() {
+        UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseInOut]) {
+            self.categoryLabel.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.categoryLabel.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            }
+        }
     }
 }
