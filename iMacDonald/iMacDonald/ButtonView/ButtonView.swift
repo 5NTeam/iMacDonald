@@ -47,7 +47,7 @@ class ButtonView: UIView  {
     private let totalQuantityLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: Constants.fontSize, weight: .medium)
-        label.textColor = .black
+        label.textColor = .label
         return label
     }()
     
@@ -55,7 +55,7 @@ class ButtonView: UIView  {
     private let totalAmountLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: Constants.fontSize, weight: .bold)
-        label.textColor = .black
+        label.textColor = .label
         return label
     }()
     
@@ -73,18 +73,25 @@ class ButtonView: UIView  {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("취소", for: .normal)
-        button.setTitleColor(.red, for: .normal)
+        button.setTitleColor(UIColor.personal, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: Constants.fontSize, weight: .bold)
         button.backgroundColor = .white
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.red.cgColor
+        button.layer.borderColor = UIColor.personal.cgColor
         button.layer.cornerRadius = Constants.cornerRadius
         button.addTarget(self,
                         action: #selector(cancelButtonTapped),
                         for: .touchUpInside)
+        
         applyShadow(to: button)
         return button
     }()
+    // 다크모드 전환 시 호출되는 메서드
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        // borderColor 업데이트
+        cancelButton.layer.borderColor = UIColor.personal.cgColor
+    }
     
     /// 결제 버튼
     private lazy var paymentButton: UIButton = {
@@ -92,7 +99,7 @@ class ButtonView: UIView  {
         button.setTitle("결제하기", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: Constants.fontSize, weight: .bold)
-        button.backgroundColor = .red
+        button.backgroundColor = UIColor.personal
         button.layer.cornerRadius = Constants.cornerRadius
         button.addTarget(self,
                         action: #selector(paymentButtonTapped),
@@ -165,10 +172,18 @@ class ButtonView: UIView  {
     /**
      * 접근성 레이블을 설정하는 메서드
      */
+
     private func setupAccessibility() {
+        // 취소 버튼을 눌렀을 때 "주문 취소하기"라고 읽어줍니다
         cancelButton.accessibilityLabel = "주문 취소하기"
+        
+        // 결제 버튼을 눌렀을 때 "결제 진행하기"라고 읽어줍니다
         paymentButton.accessibilityLabel = "결제 진행하기"
+        
+        // 수량 표시 부분을 읽을 때 "총 주문 수량"이라고 읽어줍니다
         totalQuantityLabel.accessibilityLabel = "총 주문 수량"
+        
+        // 금액 표시 부분을 읽을 때 "총 결제 금액"이라고 읽어줍니다
         totalAmountLabel.accessibilityLabel = "총 결제 금액"
     }
     
