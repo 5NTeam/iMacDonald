@@ -10,16 +10,16 @@ import SnapKit
 
 // MARK: - Delegate Protocol
 /**
- * 체크아웃 뷰의 버튼 동작을 처리하기 위한 델리게이트 프로토콜
+ * 버튼 뷰의 버튼 동작을 처리하기 위한 델리게이트 프로토콜
  */
-protocol CheckoutViewDelegate: AnyObject {
+protocol ButtonViewDelegate: AnyObject {
     /// 취소 버튼 탭 시 호출되는 메서드
     func didTapCancelButton()
     /// 결제 버튼 탭 시 호출되는 메서드
     func didTapPaymentButton()
 }
 
-class CheckoutView: UIView {
+class ButtonView: UIView  {
     // MARK: - Constants
     /**
      * 뷰에서 사용되는 상수값 모음
@@ -41,7 +41,7 @@ class CheckoutView: UIView {
     
     // MARK: - Properties
     /// 체크아웃 뷰 델리게이트
-    weak var delegate: CheckoutViewDelegate?
+    weak var delegate: ButtonViewDelegate?
     
     /// 총 수량을 표시하는 레이블
     private let totalQuantityLabel: UILabel = {
