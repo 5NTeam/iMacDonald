@@ -15,7 +15,7 @@
 import UIKit
 
 //카테고리 enum
-enum Categorys: String {
+enum Categorys: String, CaseIterable {  // CaseIterable 프로토콜 추가
     case all
     case burger
     case chicken
