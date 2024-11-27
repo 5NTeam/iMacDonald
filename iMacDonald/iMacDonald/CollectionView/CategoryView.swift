@@ -111,7 +111,7 @@ extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
             let targetOffsetX: CGFloat
             
             if cell.frame.origin.x < collectionView.contentSize.width - collectionView.bounds.width {
-                targetOffsetX = indexPath.item != 0 ? cell.frame.origin.x - 50 : cell.frame.origin.x
+                targetOffsetX = indexPath.item != 0 ? cell.frame.origin.x - 70 : cell.frame.origin.x
             } else {
                 targetOffsetX = collectionView.contentSize.width - collectionView.bounds.width
             }
