@@ -43,24 +43,28 @@ class CardView: UIView {
         self.layer.shadowOpacity = 0.2
         self.layer.shadowOffset = CGSize(width: 0, height: 2)
         self.layer.shadowRadius = 4
-        self.backgroundColor = .white
+        self.backgroundColor = UIColor.systemBackground
         
         // 이미지뷰 설정
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .yellow
+        imageView.backgroundColor = UIColor.systemBackground
         addSubview(imageView)
         
         // 메뉴이름 레이블 설정
         nameLabel.font = UIFont.boldSystemFont(ofSize: 30)
-        nameLabel.textColor = .black
+        nameLabel.textColor = UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? .white : .black // 다크모드일 때 화이트, 화이트모드일 때 블랙
+        }
         nameLabel.numberOfLines = 0 // 여러 줄로 표시 가능
         nameLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         addSubview(nameLabel)
         
         // 가격 레이블 설정
-        priceLabel.font = UIFont.systemFont(ofSize: 20)
-        priceLabel.textColor = .darkGray
+        priceLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        priceLabel.textColor = UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? .white : .black // 다크모드일 때 화이트, 화이트모드일 때 블랙
+        }
         addSubview(priceLabel)
         
         // 버튼 설정
