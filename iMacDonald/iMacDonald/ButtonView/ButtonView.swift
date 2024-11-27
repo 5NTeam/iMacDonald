@@ -27,7 +27,7 @@ class CheckoutView: UIView {
     private lazy var infoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 16
+        stackView.spacing = 12
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
         return stackView
@@ -78,9 +78,6 @@ class CheckoutView: UIView {
     }
     
     // MARK: - UI Setup
-    /**
-    * 기능: UI 컴포넌트들을 초기화하고 제약조건을 설정하는 메서드
-    */
     private func setupUI() {
         backgroundColor = .white
         
@@ -88,9 +85,6 @@ class CheckoutView: UIView {
         setupConstraints()
     }
     
-    /**
-    * 기능: 서브뷰들을 추가하고 구성하는 메서드
-    */
     private func configureSubviews() {
         addSubview(infoStackView)
         infoStackView.addArrangedSubview(totalQuantityLabel)
@@ -101,53 +95,35 @@ class CheckoutView: UIView {
         buttonStackView.addArrangedSubview(paymentButton)
     }
     
-    /**
-    * 기능: Auto Layout 제약조건을 설정하는 메서드
-    */
     private func setupConstraints() {
         infoStackView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(16)
-            make.right.equalToSuperview().offset(-16)
-            make.bottom.equalTo(buttonStackView.snp.top).offset(-16)
+            make.centerX.equalToSuperview()  // 중앙 정렬 유지
+            make.top.equalToSuperview().offset(10)  // 상단 여백 추가
+            make.width.equalTo(350)  // 적절한 너비 설정 (이 값을 조절하여 간격 조정 가능)
         }
         
         buttonStackView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(16)
-            make.right.equalToSuperview().offset(-16)
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-16)
+            make.left.equalTo(safeAreaLayoutGuide).offset(16)  // safe area 기준으로 변경
+            make.right.equalTo(safeAreaLayoutGuide).offset(-16)
+            make.bottom.equalTo(safeAreaLayoutGuide).offset(-16)
             make.height.equalTo(50)
         }
     }
     
     // MARK: - Actions
-    /**
-    * 기능: 취소 버튼 탭 이벤트 처리
-    */
     @objc private func cancelButtonTapped() {
         // 취소 버튼 동작 구현
     }
     
-    /**
-    * 기능: 결제 버튼 탭 이벤트 처리
-    */
     @objc private func paymentButtonTapped() {
         // 결제 버튼 동작 구현
     }
     
     // MARK: - Public Methods
-    /**
-    * 기능: 총 수량을 업데이트하는 메서드
-    * @param quantity: 표시할 총 수량
-    */
     func updateTotalQuantity(_ quantity: Int) {
         totalQuantityLabel.text = "총 \(quantity)개"
     }
     
-    /**
-    * 기능: 총 금액을 업데이트하는 메서드
-    * @param amount: 표시할 총 금액
-    */
     func updateTotalAmount(_ amount: Int) {
         totalAmountLabel.text = "\(amount.formattedWithSeparator)원"
     }
@@ -155,10 +131,6 @@ class CheckoutView: UIView {
 
 // MARK: - Extensions
 extension Int {
-    /**
-    * 기능: 숫자를 천 단위 구분자가 포함된 문자열로 변환
-    * @return: 천 단위 구분자가 포함된 문자열
-    */
     var formattedWithSeparator: String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
