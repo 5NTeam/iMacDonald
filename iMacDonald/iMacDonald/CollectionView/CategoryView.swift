@@ -27,7 +27,7 @@ final class CategoryView: UIView {
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(frame: frame)
-
+        
         setupUIConfig()
     }
     
@@ -106,6 +106,20 @@ extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
         let isSelected: Bool = indexPath.item == currentState
         cell.selectCategory(isSelected)
         
+        // 카테고리를 선택하면 자동으로 스크롤 되도록 설정
+        if isSelected {
+            let targetOffsetX: CGFloat
+            
+            if cell.frame.origin.x < collectionView.contentSize.width - collectionView.bounds.width {
+                targetOffsetX = indexPath.item != 0 ? cell.frame.origin.x - 50 : cell.frame.origin.x
+            } else {
+                targetOffsetX = collectionView.contentSize.width - collectionView.bounds.width
+            }
+            
+            // 애니메이션으로 스크롤 이동
+            collectionView.setContentOffset(CGPoint(x: targetOffsetX, y: 0), animated: true)
+        }
+        
         return cell
     }
     
@@ -129,7 +143,7 @@ extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
         case .side: self.currentState = 4
         case .drink: self.currentState = 5
         }
-                
+        
         collectionView.reloadData()
     }
 }
