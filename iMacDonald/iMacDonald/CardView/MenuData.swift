@@ -29,11 +29,8 @@ struct MenuData {
     let name: String        // 메뉴 이름
     let price: Int       // 메뉴 가격
     let image: UIImage?     // 메뉴 이미지
-    let category: Categorys
-}
-
-// 메뉴 리스트를 관리하는 구조체
-struct MenuRepository {
+    let category: Categorys?
+    
     static let menuList: [MenuData] = [
         MenuData(name: "치즈버거", price: 4000, image: UIImage(named: "cheeseburger"), category: .burger),
         MenuData(name: "치킨", price: 4500, image: UIImage(named: "chicken"), category: .chicken),

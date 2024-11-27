@@ -1,24 +1,31 @@
-//
-//  CardView1.swift
-//  iMacDonald
-//
-//  Created by Hwangseokbeom on 11/26/24.
-//
-
 import UIKit
 import SnapKit
 
+protocol CardViewDelegate: AnyObject {
+    func cardViewButtonTapped(_ data: MenuData)
+}
+
 class CardView: UIView {
     
+    // Delegate property
+    weak var delegate: CardViewDelegate?
+
     // CardView의 구성요소 이미지, 레이블 2개, 버튼 1개 객체 생성
     private let imageView = UIImageView()
     private let nameLabel = UILabel()
     private let priceLabel = UILabel()
     private let button = UIButton()
     
+    private var itemName: String = ""
+    private var itemPrice: Int = 0
+    private var itemImage: UIImage?
+    
     // 메뉴 이름, 가격, 이미지를 가지는 객체 생성하고 초기화
     init(name: String, price: Int, image: UIImage?) {
         super.init(frame: .zero)
+        itemName = name
+        itemPrice = price
+        itemImage = image // 이미지가 넘어가는게 확인되는게 아니면 이미지 이름을 넘기면 되고 , MenuData 구조체를 재사용하지말고 새로 구조체를 만들자 
         setupView() // 뷰
         configure(name: name, price: price, image: image) // 데이터
     }
@@ -61,17 +68,16 @@ class CardView: UIView {
                                   withConfiguration: UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large))
         button.setImage(buttonImage, for: .normal)
         button.tintColor = UIColor(named: "PersonalColor")
-        //button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         addSubview(button)
         
         // 제약 조건 설정
         setupConstraints()
-        
     }
     
     // 카드뷰의 요소 이미지뷰, 메뉴이름, 가격, 버튼 제약 조건 설정 메서드
     private func setupConstraints() {
-        //이미지 제약 조건
+        // 이미지 제약 조건
         imageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.6) // 이미지뷰 높이: 카드뷰 높이의 60%
@@ -98,12 +104,17 @@ class CardView: UIView {
         }
     }
     
-
     // 데이터 구성
     private func configure(name: String, price: Int, image: UIImage?) {
         nameLabel.text = name
         priceLabel.text = "\(price)원"
         imageView.image = image
+    }
+    
+    // 버튼이 눌렸을 때 호출되는 메서드
+    @objc private func buttonTapped() {
+        let cardInfo = MenuData(name: itemName, price: itemPrice, image: itemImage , category: nil ) // MenuData 구조체 재사용해서 담아서 보내줌 
+        delegate?.cardViewButtonTapped(cardInfo)
     }
     
 }
