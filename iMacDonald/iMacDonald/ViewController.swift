@@ -86,7 +86,7 @@ class MenuViewController: UIViewController, CheckoutViewDelegate {
         
         let confirmAction = UIAlertAction(
             title: "예",
-            style: .default
+            style: .destructive
         ) { _ in
             // 결제 처리 로직
             print("결제가 진행됩니다.")

@@ -1,20 +1,35 @@
 /**
-* 작성자: 양정무
-* 파일명: ButtonView.swift
-* 기능: 결제 정보 표시 및 결제/취소 버튼을 포함하는 하단 뷰
-*/
+ * 작성자: 양정무
+ * 파일명: ButtonView.swift
+ * 기능: 결제 정보 표시 및 결제/취소 버튼을 포함하는 하단 뷰
+ * 최종수정일: 2024.11.27
+ */
 
 import UIKit
 import SnapKit
 
 // MARK: - Delegate Protocol
+/**
+ * 체크아웃 뷰의 버튼 동작을 처리하기 위한 델리게이트 프로토콜
+ */
 protocol CheckoutViewDelegate: AnyObject {
+    /// 취소 버튼 탭 시 호출되는 메서드
     func didTapCancelButton()
+    /// 결제 버튼 탭 시 호출되는 메서드
     func didTapPaymentButton()
 }
 
 class CheckoutView: UIView {
     // MARK: - Constants
+    /**
+     * 뷰에서 사용되는 상수값 모음
+     * cornerRadius: 버튼의 모서리 둥글기 값
+     * buttonHeight: 버튼의 높이
+     * horizontalPadding: 좌우 여백
+     * stackViewSpacing: 스택뷰 내부 아이템 간격
+     * fontSize: 기본 폰트 크기
+     * infoStackViewWidth: 정보 스택뷰의 너비
+     */
     private enum Constants {
         static let cornerRadius: CGFloat = 25
         static let buttonHeight: CGFloat = 50
@@ -25,8 +40,10 @@ class CheckoutView: UIView {
     }
     
     // MARK: - Properties
+    /// 체크아웃 뷰 델리게이트
     weak var delegate: CheckoutViewDelegate?
     
+    /// 총 수량을 표시하는 레이블
     private let totalQuantityLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: Constants.fontSize, weight: .medium)
@@ -34,6 +51,7 @@ class CheckoutView: UIView {
         return label
     }()
     
+    /// 총 금액을 표시하는 레이블
     private let totalAmountLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: Constants.fontSize, weight: .bold)
@@ -41,6 +59,7 @@ class CheckoutView: UIView {
         return label
     }()
     
+    /// 정보를 표시하는 수평 스택뷰
     private lazy var infoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -50,10 +69,12 @@ class CheckoutView: UIView {
         return stackView
     }()
     
+    /// 취소 버튼
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("취소", for: .normal)
         button.setTitleColor(.red, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: Constants.fontSize, weight: .bold)
         button.backgroundColor = .white
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.red.cgColor
@@ -65,10 +86,12 @@ class CheckoutView: UIView {
         return button
     }()
     
+    /// 결제 버튼
     private lazy var paymentButton: UIButton = {
         let button = UIButton()
         button.setTitle("결제하기", for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: Constants.fontSize, weight: .bold)
         button.backgroundColor = .red
         button.layer.cornerRadius = Constants.cornerRadius
         button.addTarget(self,
@@ -78,6 +101,7 @@ class CheckoutView: UIView {
         return button
     }()
     
+    /// 버튼을 담는 수평 스택뷰
     private let buttonStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -86,7 +110,7 @@ class CheckoutView: UIView {
         return stackView
     }()
     
-    // MARK: - Lifecycle
+    // MARK: - Lifecycle Methods
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -97,13 +121,19 @@ class CheckoutView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI Setup
+    // MARK: - Private Methods
+    /**
+     * UI 초기 설정을 수행하는 메서드
+     */
     private func setupUI() {
         backgroundColor = .white
         configureSubviews()
         setupConstraints()
     }
     
+    /**
+     * 서브뷰들을 구성하고 추가하는 메서드
+     */
     private func configureSubviews() {
         addSubview(infoStackView)
         infoStackView.addArrangedSubview(totalQuantityLabel)
@@ -114,6 +144,9 @@ class CheckoutView: UIView {
         buttonStackView.addArrangedSubview(paymentButton)
     }
     
+    /**
+     * 오토레이아웃 제약조건을 설정하는 메서드
+     */
     private func setupConstraints() {
         infoStackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -129,6 +162,9 @@ class CheckoutView: UIView {
         }
     }
     
+    /**
+     * 접근성 레이블을 설정하는 메서드
+     */
     private func setupAccessibility() {
         cancelButton.accessibilityLabel = "주문 취소하기"
         paymentButton.accessibilityLabel = "결제 진행하기"
@@ -136,6 +172,10 @@ class CheckoutView: UIView {
         totalAmountLabel.accessibilityLabel = "총 결제 금액"
     }
     
+    /**
+     * 버튼에 그림자를 적용하는 메서드
+     * - Parameter button: 그림자를 적용할 버튼
+     */
     private func applyShadow(to button: UIButton) {
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -143,26 +183,44 @@ class CheckoutView: UIView {
         button.layer.shadowOpacity = 0.1
     }
     
-    // MARK: - Actions
+    // MARK: - Action Methods
+    /**
+     * 취소 버튼 탭 이벤트 처리 메서드
+     */
     @objc private func cancelButtonTapped() {
         delegate?.didTapCancelButton()
     }
     
+    /**
+     * 결제 버튼 탭 이벤트 처리 메서드
+     */
     @objc private func paymentButtonTapped() {
         delegate?.didTapPaymentButton()
     }
     
     // MARK: - Public Methods
+    /**
+     * 총 수량을 업데이트하는 메서드
+     * - Parameter quantity: 표시할 총 수량
+     */
     func updateTotalQuantity(_ quantity: Int) {
         totalQuantityLabel.text = "총 \(quantity)개"
     }
     
+    /**
+     * 총 금액을 업데이트하는 메서드
+     * - Parameter amount: 표시할 총 금액
+     */
     func updateTotalAmount(_ amount: Int) {
         totalAmountLabel.text = "\(amount.formattedWithSeparator)원"
     }
 }
 
 // MARK: - Extensions
+/**
+ * Int 타입에 대한 확장
+ * 숫자 포맷팅 기능 추가
+ */
 extension Int {
     private static let numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
