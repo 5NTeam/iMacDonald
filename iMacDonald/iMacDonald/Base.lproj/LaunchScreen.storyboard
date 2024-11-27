@@ -20,16 +20,16 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iMacDonaldLogoYellow" translatesAutoresizingMaskIntoConstraints="NO" id="xyz-ab-123">
                                 <rect key="frame" x="121.66666666666669" y="159" width="150" height="150"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="abc-12-345"/>
-                                    <constraint firstAttribute="height" constant="150" id="def-34-567"/>
+                                    <constraint firstAttribute="width" constant="250" id="abc-12-345"/>
+                                    <constraint firstAttribute="height" constant="250" id="def-34-567"/>
                                 </constraints>
                             </imageView>
                             <!-- 텍스트 로고 이미지 -->
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iMacDonald" translatesAutoresizingMaskIntoConstraints="NO" id="vXg-f4-bcd">
                                 <rect key="frame" x="46.666666666666657" y="329" width="300" height="100"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="8hb-g7-gfa"/>
-                                    <constraint firstAttribute="height" constant="100" id="jh2-f4-e5c"/>
+                                    <constraint firstAttribute="width" constant="350" id="8hb-g7-gfa"/>
+                                    <constraint firstAttribute="height" constant="200" id="jh2-f4-e5c"/>
                                 </constraints>
                             </imageView>
                         </subviews>
@@ -41,7 +41,7 @@
                             <constraint firstItem="xyz-ab-123" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="mno-90-123"/>
                             <!-- 텍스트 로고 제약조건 -->
                             <constraint firstItem="vXg-f4-bcd" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="cg6-Dh-adf"/>
-                            <constraint firstItem="vXg-f4-bcd" firstAttribute="top" secondItem="xyz-ab-123" secondAttribute="bottom" constant="20" id="pqr-12-345"/>
+                            <constraint firstItem="vXg-f4-bcd" firstAttribute="top" secondItem="xyz-ab-123" secondAttribute="bottom" constant="-100" id="pqr-12-345"/>
                         </constraints>
                     </view>
                 </viewController>

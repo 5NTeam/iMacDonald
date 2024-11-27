@@ -5,21 +5,38 @@
 */
 
 import UIKit
-
 import SnapKit
 
+// MARK: - Delegate Protocol
+protocol CheckoutViewDelegate: AnyObject {
+    func didTapCancelButton()
+    func didTapPaymentButton()
+}
+
 class CheckoutView: UIView {
+    // MARK: - Constants
+    private enum Constants {
+        static let cornerRadius: CGFloat = 25
+        static let buttonHeight: CGFloat = 50
+        static let horizontalPadding: CGFloat = 16
+        static let stackViewSpacing: CGFloat = 12
+        static let fontSize: CGFloat = 16
+        static let infoStackViewWidth: CGFloat = 350
+    }
+    
     // MARK: - Properties
+    weak var delegate: CheckoutViewDelegate?
+    
     private let totalQuantityLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.font = .systemFont(ofSize: Constants.fontSize, weight: .medium)
         label.textColor = .black
         return label
     }()
     
     private let totalAmountLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = .systemFont(ofSize: Constants.fontSize, weight: .bold)
         label.textColor = .black
         return label
     }()
@@ -27,7 +44,7 @@ class CheckoutView: UIView {
     private lazy var infoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 12
+        stackView.spacing = Constants.stackViewSpacing
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
         return stackView
@@ -40,10 +57,11 @@ class CheckoutView: UIView {
         button.backgroundColor = .white
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.red.cgColor
-        button.layer.cornerRadius = 25
+        button.layer.cornerRadius = Constants.cornerRadius
         button.addTarget(self,
-                action: #selector(cancelButtonTapped),
-                for: .touchUpInside)
+                        action: #selector(cancelButtonTapped),
+                        for: .touchUpInside)
+        applyShadow(to: button)
         return button
     }()
     
@@ -52,17 +70,18 @@ class CheckoutView: UIView {
         button.setTitle("결제하기", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .red
-        button.layer.cornerRadius = 25
+        button.layer.cornerRadius = Constants.cornerRadius
         button.addTarget(self,
-                action: #selector(paymentButtonTapped),
-                for: .touchUpInside)
+                        action: #selector(paymentButtonTapped),
+                        for: .touchUpInside)
+        applyShadow(to: button)
         return button
     }()
     
     private let buttonStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 16
+        stackView.spacing = Constants.stackViewSpacing
         stackView.distribution = .fillEqually
         return stackView
     }()
@@ -71,6 +90,7 @@ class CheckoutView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
+        setupAccessibility()
     }
     
     required init?(coder: NSCoder) {
@@ -80,7 +100,6 @@ class CheckoutView: UIView {
     // MARK: - UI Setup
     private func setupUI() {
         backgroundColor = .white
-        
         configureSubviews()
         setupConstraints()
     }
@@ -97,26 +116,40 @@ class CheckoutView: UIView {
     
     private func setupConstraints() {
         infoStackView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()  // 중앙 정렬 유지
-            make.top.equalToSuperview().offset(10)  // 상단 여백 추가
-            make.width.equalTo(350)  // 적절한 너비 설정 (이 값을 조절하여 간격 조정 가능)
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(10)
+            make.width.equalTo(Constants.infoStackViewWidth)
         }
         
         buttonStackView.snp.makeConstraints { make in
-            make.left.equalTo(safeAreaLayoutGuide).offset(16)  // safe area 기준으로 변경
-            make.right.equalTo(safeAreaLayoutGuide).offset(-16)
-            make.bottom.equalTo(safeAreaLayoutGuide).offset(-16)
-            make.height.equalTo(50)
+            make.left.equalTo(safeAreaLayoutGuide).offset(Constants.horizontalPadding)
+            make.right.equalTo(safeAreaLayoutGuide).offset(-Constants.horizontalPadding)
+            make.bottom.equalTo(safeAreaLayoutGuide).offset(-Constants.horizontalPadding)
+            make.height.equalTo(Constants.buttonHeight)
         }
+    }
+    
+    private func setupAccessibility() {
+        cancelButton.accessibilityLabel = "주문 취소하기"
+        paymentButton.accessibilityLabel = "결제 진행하기"
+        totalQuantityLabel.accessibilityLabel = "총 주문 수량"
+        totalAmountLabel.accessibilityLabel = "총 결제 금액"
+    }
+    
+    private func applyShadow(to button: UIButton) {
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 2)
+        button.layer.shadowRadius = 4
+        button.layer.shadowOpacity = 0.1
     }
     
     // MARK: - Actions
     @objc private func cancelButtonTapped() {
-        // 취소 버튼 동작 구현
+        delegate?.didTapCancelButton()
     }
     
     @objc private func paymentButtonTapped() {
-        // 결제 버튼 동작 구현
+        delegate?.didTapPaymentButton()
     }
     
     // MARK: - Public Methods
@@ -131,9 +164,13 @@ class CheckoutView: UIView {
 
 // MARK: - Extensions
 extension Int {
+    private static let numberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+    
     var formattedWithSeparator: String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        return numberFormatter.string(from: NSNumber(value: self)) ?? "\(self)"
+        return Int.numberFormatter.string(from: NSNumber(value: self)) ?? "\(self)"
     }
 }
