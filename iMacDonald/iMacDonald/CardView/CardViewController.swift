@@ -15,7 +15,7 @@ class CardViewController: UIViewController {
     }
     
     private func setupUI() {
-        // 뷰 컨트롤러 배경색 설정
+
         view.backgroundColor = .black
         
         // CardView 생성 및 데이터 전달

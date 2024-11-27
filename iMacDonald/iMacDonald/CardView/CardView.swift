@@ -97,7 +97,8 @@ class CardView: UIView {
         }
     }
     
-    // 데이터 넣기
+
+    // 데이터 구성
     private func configure(name: String, price: Int, image: UIImage?) {
         nameLabel.text = name
         priceLabel.text = "\(price)원"
