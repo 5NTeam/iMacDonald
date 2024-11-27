@@ -86,7 +86,7 @@ private extension CategoryView {
         collectionView.snp.makeConstraints {
             $0.top.equalTo(titleLogo.snp.bottom)
             $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-20)
             $0.height.equalTo(50)
         }
     }
