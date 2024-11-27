@@ -20,7 +20,7 @@ class CardView: UIView {
     init(name: String, price: Int, image: UIImage?) {
         super.init(frame: .zero)
         setupView() // 뷰
-        configure(name: name, price: price, image: image) // 데이터 바인딩 호출
+        configure(name: name, price: price, image: image) // 데이터
     }
     
     required init?(coder: NSCoder) {
@@ -97,7 +97,7 @@ class CardView: UIView {
         }
     }
     
-    // 데이터 바인딩해주는 메서드
+    // 데이터 넣기
     private func configure(name: String, price: Int, image: UIImage?) {
         nameLabel.text = name
         priceLabel.text = "\(price)원"

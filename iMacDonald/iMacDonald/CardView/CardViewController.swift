@@ -18,7 +18,7 @@ class CardViewController: UIViewController {
         // 뷰 컨트롤러 배경색 설정
         view.backgroundColor = .black
         
-        // CardView 생성 및 데이터 바인딩
+        // CardView 생성 및 데이터 전달
         let cardView = CardView(name: "치즈버거", price: 4000, image: UIImage(named: "cheeseburger"))
         view.addSubview(cardView)
         
