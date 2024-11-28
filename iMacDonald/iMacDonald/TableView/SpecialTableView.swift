@@ -28,7 +28,7 @@ final class SpecialTableView: SpecialTable {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        tableView.backgroundColor = UIColor.count.withAlphaComponent(0.7)
+        tableView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.9)
         
         // 테이블 뷰 설정
         setupTableView()
