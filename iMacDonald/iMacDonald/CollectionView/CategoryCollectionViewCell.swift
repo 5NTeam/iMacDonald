@@ -74,8 +74,8 @@ extension CategoryCollectionViewCell {
         self.categoryLabel.text = categoryList[indexPath]
     }
     
-    /// 선택된 카테고리를 강조하는 메소드
-    /// - Parameter isSelected: 현재 카테고리가 선택되었는지 확인
+    /// 선택된 셀을 강조하는 메소드
+    /// - Parameter isSelected: 현재 셀이 선택되었는지 확인
     func selectCategory(_ isSelected: Bool) {
         guard isSelected else { return }
         self.categoryLabel.backgroundColor = UIColor.personal
@@ -85,6 +85,7 @@ extension CategoryCollectionViewCell {
         scaleEffect()
     }
     
+    /// 셀의 스케일을 줄였다가 다시 키우는 메소드
     private func scaleEffect() {
         UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseInOut]) {
             self.categoryLabel.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
