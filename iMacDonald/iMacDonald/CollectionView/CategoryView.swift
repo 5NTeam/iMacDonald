@@ -100,6 +100,7 @@ private extension CategoryView {
 
 // 컬렉션뷰의 델리게이트 및 데이터소스 구현부
 extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     /// 컬렉션뷰의 셀 아이템 수량을 설정
     /// - Parameters:
     ///   - collectionView: 컬렉션뷰 인스턴스
