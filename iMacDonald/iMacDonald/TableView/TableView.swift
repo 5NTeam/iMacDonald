@@ -18,7 +18,7 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         
         view.backgroundColor = .count
-        tableView.backgroundColor = UIColor.white.withAlphaComponent(0.1)
+        tableView.backgroundColor = UIColor.white.withAlphaComponent(0.7)
         
         // 테이블 뷰 설정
         setupTableView()
@@ -176,10 +176,16 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     // 테이블 뷰 높이 갱신 메서드
-    func updateTableViewHeight() {
-        tableView.snp.updateConstraints { make in
-            make.height.equalTo(tableView.contentSize.height)
-        }
-        tableView.layoutIfNeeded()
-    }
-}
+     func updateTableViewHeight() {
+         let rowCount = cart.count
+         let maxRowsToShow = 3
+         
+         // 3개까지만 높이가 증가하도록 설정
+         let height = min(rowCount, maxRowsToShow) * 90 // 셀 높이를 90으로 설정했으므로
+         tableView.snp.updateConstraints { make in
+             make.height.equalTo(height)
+         }
+         
+         tableView.layoutIfNeeded()
+     }
+ }
