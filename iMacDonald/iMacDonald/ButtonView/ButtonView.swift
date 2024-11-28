@@ -159,7 +159,7 @@ class ButtonView: UIView  {
      */
     private func setupConstraints() {
         infoStackView.snp.makeConstraints { make in
-            make.bottom.equalTo(buttonStackView.snp.top).offset(-10)
+            make.bottom.equalTo(buttonStackView.snp.top).offset(-15)
             make.leading.trailing.equalToSuperview().inset(20)
             make.width.equalTo(Constants.infoStackViewWidth)
         }

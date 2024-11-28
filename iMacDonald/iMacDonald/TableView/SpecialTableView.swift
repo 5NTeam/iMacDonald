@@ -80,12 +80,13 @@ private extension SpecialTableView {
         // 수량이 0이 되면 해당 항목 삭제
         if cart[index].quantity == 0 {
             cart.remove(at: index)
-            self.sendDelegate?.sendTableViewCellData()
-            self.sendDelegate?.updateInfoLabel()
             tableView.reloadData()
         } else {
             tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
         }
+        
+        self.sendDelegate?.sendTableViewCellData()
+        self.sendDelegate?.updateInfoLabel()
         
         updateTableViewHeight()
     }
@@ -170,6 +171,12 @@ private extension SpecialTableView {
 }
 
 extension SpecialTableView {
+    func checkShoppingBasket() -> Int {
+        let result = self.cart.reduce(0, { $0 + $1.quantity } )
+        
+        return result
+    }
+    
     func calcurateTotalPrice() -> Int {
         var result: Int = 0
         

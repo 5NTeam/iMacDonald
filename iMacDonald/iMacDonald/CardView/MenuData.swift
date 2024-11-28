@@ -15,7 +15,8 @@
 import UIKit
 
 //카테고리 enum
-enum Categorys: String, CaseIterable {  // CaseIterable 프로토콜 추가
+enum Categorys: String, CaseIterable {
+    // CaseIterable 프로토콜 추가
     case all
     case burger
     case chicken
@@ -25,12 +26,16 @@ enum Categorys: String, CaseIterable {  // CaseIterable 프로토콜 추가
 }
 
 // 메뉴 정보를 저장하는 구조체
-struct MenuData {
+struct MenuData: Comparable {
     let name: String        // 메뉴 이름
     let price: Int       // 메뉴 가격
     let image: UIImage?     // 메뉴 이미지
     let category: Categorys?
     var quantity: Int = 1
+    
+    static func < (_ rhs: MenuData, _ lhs: MenuData) -> Bool {
+        return rhs.name > lhs.name
+    }
     
     static let menuList: [MenuData] = [
         MenuData(name: "치즈버거", price: 4000, image: UIImage(named: "cheeseburger"), category: .burger, quantity: 1),
@@ -40,7 +45,7 @@ struct MenuData {
         MenuData(name: "더블버거", price: 3000, image: UIImage(named: "doubleburger"), category: .burger, quantity: 1),
         MenuData(name: "햄버거", price: 2000, image: UIImage(named: "hamburger"), category: .burger, quantity: 1),
         MenuData(name: "아이스티", price: 5000, image: UIImage(named: "icetea"), category: .drink, quantity: 1),
-        MenuData(name: "레몬에이드", price: 3000, image: UIImage(named: "lemonade"), category: .side, quantity: 1),
+        MenuData(name: "레몬에이드", price: 3000, image: UIImage(named: "lemonade"), category: .drink, quantity: 1),
         MenuData(name: "너겟", price: 2000, image: UIImage(named: "nurget"), category: .side, quantity: 1),
         MenuData(name: "어니언링", price: 5000, image: UIImage(named: "onionring"), category: .side, quantity: 1),
         MenuData(name: "감자튀김", price: 3000, image: UIImage(named: "potato"), category: .side, quantity: 1),

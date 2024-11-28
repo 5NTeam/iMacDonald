@@ -65,7 +65,7 @@ private extension MainView {
         buttonView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.height.equalTo(140)
+            make.height.equalTo(145)
         }
     }
     
@@ -115,7 +115,7 @@ private extension MainView {
         menuGridStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
         let filteredMenus = selectedCategory == .all ?
-            menuList : menuList.filter { $0.category == selectedCategory }
+        menuList.sorted(by: { $0.category?.rawValue ?? "" < $1.category?.rawValue ?? "" }) : menuList.sorted(by: >).filter { $0.category == selectedCategory }
         let rows = stride(from: 0, to: filteredMenus.count, by: 2)
         
         rows.forEach { rowIndex in
@@ -198,7 +198,7 @@ extension MainView: SpecialTableViewDelegate {
                 return
             }
             
-            self.buttonView.updateTotalQuantity(self.cartView.checkCartCount())
+            self.buttonView.updateTotalQuantity(self.cartView.checkShoppingBasket())
             self.buttonView.updateTotalAmount(self.cartView.calcurateTotalPrice())
         }
     }
