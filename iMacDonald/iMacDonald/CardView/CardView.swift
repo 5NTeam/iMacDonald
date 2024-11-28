@@ -28,19 +28,20 @@ class CardView: UIView {
         itemImage = image // 이미지가 넘어가는게 확인되는게 아니면 이미지 이름을 넘기면 되고 , MenuData 구조체를 재사용하지말고 새로 구조체를 만들자
         setupView() // 뷰
         configure(name: name, price: price, image: image) // 데이터
+        registerTraitChangeHandler() // iOS 17 이상에서 Trait 감지
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        registerTraitChangeHandler()
     }
     
     // 카드 뷰 UI 설정
     private func setupView() {
-        updateBorderColor()
         // 카드뷰 스타일 설정
         self.clipsToBounds = true
         self.layer.borderColor = UIColor(named: "CardViewShadowColor")?.cgColor
-        self.layer.borderWidth = 3
+        self.layer.borderWidth = 2
         self.layer.cornerRadius = 12
         self.backgroundColor = UIColor(named: "CardViewColor")
 
@@ -141,6 +142,14 @@ class CardView: UIView {
             self.layer.borderColor = UIColor(named: "CardViewShadowColor")?.cgColor
         } else {
             self.layer.borderColor = UIColor(named: "CardViewShadowColor")?.cgColor
+        }
+    }
+    // iOS 17 이상에서 Trait 변경 감지 설정
+    private func registerTraitChangeHandler() {
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, previousTraitCollection: UITraitCollection) in
+                self.updateBorderColor()
+            }
         }
     }
 }
