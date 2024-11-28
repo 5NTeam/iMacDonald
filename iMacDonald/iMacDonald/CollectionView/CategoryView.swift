@@ -100,15 +100,27 @@ private extension CategoryView {
 
 // 컬렉션뷰의 델리게이트 및 데이터소스 구현부
 extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
+    /// 컬렉션뷰의 셀 아이템 수량을 설정
+    /// - Parameters:
+    ///   - collectionView: 컬렉션뷰 인스턴스
+    ///   - section: 셀 구역을 나누는 값 = 없음
+    /// - Returns: 셀의 수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return Categorys.allCases.count  // CollectionViewTestMenuCategory를 Categorys로 변경
     }
     
+    /// 컬렉션뷰에 셀을 등록하는 메소드
+    /// - Parameters:
+    ///   - collectionView: 컬렉션뷰 인스턴스
+    ///   - indexPath: 컬렉션뷰의 IndexPath
+    /// - Returns: 컬렉션뷰 셀(CategoryCollectionViewCell)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as! CategoryCollectionViewCell
         
+        // 셀의 레이블을 설정하는 메소드
         cell.categoryLabelConfig(indexPath.item)
         
+        // 셀의 선택을 감지하고 강조하는 메소드
         let isSelected: Bool = indexPath.item == currentState
         cell.selectCategory(isSelected)
         
@@ -129,8 +141,13 @@ extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
         return cell
     }
     
+    /// 셀이 선택되었을 때를 감지하는 메소드
+    /// - Parameters:
+    ///   - collectionView: 컬렉션뷰 인스턴스
+    ///   - indexPath: 컬렉션뷰의 IndexPath
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        // 선택된 셀이 몇 번째 셀인지에 따라 카테고리 변경
         switch indexPath.item {
         case 0: self.state = .all
         case 1: self.state = .burger
@@ -141,6 +158,7 @@ extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
         default: break
         }
         
+        // 현재 카테고리에 따라 state값 변경
         switch self.state {
         case .all: self.currentState = 0
         case .burger: self.currentState = 1
@@ -150,6 +168,7 @@ extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
         case .drink: self.currentState = 5
         }
         
+        // 컬렉션뷰 reload
         collectionView.reloadData()
         
         delegate?.categoryDidChange(self.state)
