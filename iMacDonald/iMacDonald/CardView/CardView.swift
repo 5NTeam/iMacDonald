@@ -40,7 +40,7 @@ class CardView: UIView {
         // 카드뷰 스타일 설정
         self.clipsToBounds = true
         self.layer.borderColor = UIColor(named: "CardViewShadowColor")?.cgColor
-        self.layer.borderWidth = 3
+        self.layer.borderWidth = 2
         self.layer.cornerRadius = 12
         self.backgroundColor = UIColor(named: "CardViewColor")
 
