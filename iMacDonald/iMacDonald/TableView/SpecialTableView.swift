@@ -178,6 +178,16 @@ extension SpecialTableView {
         
         cell.selectionStyle = .none
         
+        if self.cart.count > 3 {
+            //스크롤이 가능하게 해라
+            self.tableView.isScrollEnabled = true
+        } else {
+            //스크롤이 불가능하게
+            self.tableView.isScrollEnabled = false
+        }
+        
+        
+        
         // + 버튼에 Long Press 제스처 추가
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
         cell.increaseButton.addGestureRecognizer(longPress)
