@@ -31,20 +31,19 @@ class CardView: UIView {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
     
     // 카드 뷰 UI 설정
     private func setupView() {
+        updateBorderColor()
         // 카드뷰 스타일 설정
         self.clipsToBounds = true
+        self.layer.borderColor = UIColor(named: "CardViewShadowColor")?.cgColor
+        self.layer.borderWidth = 3
         self.layer.cornerRadius = 12
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 0.2
-        self.layer.shadowOffset = CGSize(width: 0, height: 2)
-        self.layer.shadowRadius = 4
-        self.backgroundColor = UIColor.systemBackground
-        
+        self.backgroundColor = UIColor(named: "CardViewColor")
+
         // 이미지뷰 설정
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -53,23 +52,23 @@ class CardView: UIView {
         
         // 메뉴이름 레이블 설정
         nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        nameLabel.textColor = UIColor { traitCollection in
-            return traitCollection.userInterfaceStyle == .dark ? .white : .black // 다크모드일 때 화이트, 아니면 블랙
-        }
+        nameLabel.textColor = UIColor.dynamicTextColor
         nameLabel.numberOfLines = 0 // 여러 줄로 표시 가능
         nameLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         addSubview(nameLabel)
         
         // 가격 레이블 설정
         priceLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        priceLabel.textColor = UIColor { traitCollection in
-            return traitCollection.userInterfaceStyle == .dark ? .white : .black // 다크모드일 때 화이트, 아니면 블랙
-        }
+        priceLabel.textColor = UIColor.dynamicTextColor
         addSubview(priceLabel)
         
         // 버튼 설정
         let buttonImage = UIImage(systemName: "plus.circle.fill",
                                   withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .bold, scale: .large))
+        // 이미지가 버튼 크기에 맞게 조정되도록 설정
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentHorizontalAlignment = .fill
+        button.contentVerticalAlignment = .top
         button.setImage(buttonImage, for: .normal)
         button.tintColor = UIColor(named: "PersonalColor")
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
@@ -95,6 +94,7 @@ class CardView: UIView {
         }
         // 가격 제약 조건
         priceLabel.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-5)
             make.top.equalTo(nameLabel.snp.bottom)
             make.leading.equalToSuperview().offset(10)
             make.height.equalToSuperview().multipliedBy(0.2)
@@ -102,6 +102,7 @@ class CardView: UIView {
         }
         // 버튼 제약 조건
         button.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-5)
             make.trailing.equalToSuperview().offset(-10) // 카드뷰 오른쪽에서 10pt
             make.centerY.equalTo(priceLabel.snp.centerY) // 가격과 수평
             make.width.equalToSuperview().multipliedBy(0.2) // 카드뷰 너비의 20%
@@ -122,4 +123,35 @@ class CardView: UIView {
         delegate?.cardViewButtonTapped(cardInfo)
     }
     
+    
+// 다크/라이트 모드 변경 시 호출되는 메서드
+   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+       super.traitCollectionDidChange(previousTraitCollection)
+
+       // 색상 외형 변경이 있는 경우 업데이트
+       if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+           updateBorderColor()
+       }
+   }
+    
+// 보더 색상 업데이트 메서드
+    private func updateBorderColor() {
+        // 다크 모드와 라이트 모드에 따라 색상 설정
+        if self.traitCollection.userInterfaceStyle == .dark {
+            self.layer.borderColor = UIColor(named: "CardViewShadowColor")?.cgColor
+        } else {
+            self.layer.borderColor = UIColor(named: "CardViewShadowColor")?.cgColor
+        }
+    }
 }
+
+// 기본은 블랙, 다크모드일 시 화이트로 색상을 변경해주는 메서드 정의
+extension UIColor {
+    static var dynamicTextColor: UIColor {
+        return UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? .white : .black
+        }
+    }
+}
+
+
