@@ -25,7 +25,7 @@ class MenuTableViewCell: UITableViewCell {
     }
     // 이건 위에 초기화 하니까 써야한다고 xcode상에서 fix해줌
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
     private func setupUI() {
         // 메뉴 이미지 뷰
