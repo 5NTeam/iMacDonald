@@ -38,13 +38,11 @@ class CardView: UIView {
     private func setupView() {
         // 카드뷰 스타일 설정
         self.clipsToBounds = true
+        self.layer.borderColor = UIColor(named: "CardViewShadowColor")?.cgColor
+        self.layer.borderWidth = 3
         self.layer.cornerRadius = 12
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 0.2
-        self.layer.shadowOffset = CGSize(width: 0, height: 2)
-        self.layer.shadowRadius = 4
-        self.backgroundColor = UIColor.systemBackground
-        
+        self.backgroundColor = UIColor(named: "CardViewColor")
+
         // 이미지뷰 설정
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
