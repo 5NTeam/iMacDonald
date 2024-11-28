@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class MenuViewController: UIViewController, ButtonViewDelegate {
+class ViewController: UIViewController, ButtonViewDelegate {
     // MARK: - Properties
     private let buttonView = ButtonView() // 변수명을 소문자로 시작하도록 수정
     
