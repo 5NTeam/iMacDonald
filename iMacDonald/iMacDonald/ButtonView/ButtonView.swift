@@ -82,7 +82,7 @@ class ButtonView: UIView  {
         button.addTarget(self,
                         action: #selector(cancelButtonTapped),
                         for: .touchUpInside)
-        
+        button.isUserInteractionEnabled = true  // 추가
         applyShadow(to: button)
         return button
     }()
@@ -105,6 +105,7 @@ class ButtonView: UIView  {
         button.addTarget(self,
                         action: #selector(paymentButtonTapped),
                         for: .touchUpInside)
+        button.isUserInteractionEnabled = true  // 추가
         applyShadow(to: button)
         return button
     }()
@@ -121,6 +122,7 @@ class ButtonView: UIView  {
     // MARK: - Lifecycle Methods
     override init(frame: CGRect) {
         super.init(frame: frame)
+        isUserInteractionEnabled = true  // 추가
         setupUI()
         setupAccessibility()
     }
@@ -203,13 +205,16 @@ class ButtonView: UIView  {
      * 취소 버튼 탭 이벤트 처리 메서드
      */
     @objc private func cancelButtonTapped() {
+        print("ButtonView: Cancel button tapped")
         delegate?.didTapCancelButton()
     }
+
     
     /**
      * 결제 버튼 탭 이벤트 처리 메서드
      */
     @objc private func paymentButtonTapped() {
+        print("ButtonView: Payment button tapped")
         delegate?.didTapPaymentButton()
     }
     
