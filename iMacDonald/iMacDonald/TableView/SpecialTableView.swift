@@ -19,6 +19,13 @@ final class SpecialTableView: SpecialTable {
     weak var delegate: CardViewDelegate?
     weak var buttonDelegate: ButtonViewDelegate?
     
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard !tableView.frame.contains(point) else {
+            return super.hitTest(point, with: event)
+        }
+        return nil
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -44,7 +51,7 @@ final class SpecialTableView: SpecialTable {
         super.init(coder: coder)
     }
 }
- 
+
 private extension SpecialTableView {
     // 테이블 뷰 초기화 메서드
     private func setupTableView() {
