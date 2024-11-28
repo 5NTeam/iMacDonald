@@ -31,11 +31,12 @@ class CardView: UIView {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
     
     // 카드 뷰 UI 설정
     private func setupView() {
+        updateBorderColor()
         // 카드뷰 스타일 설정
         self.clipsToBounds = true
         self.layer.borderColor = UIColor(named: "CardViewShadowColor")?.cgColor
@@ -51,18 +52,14 @@ class CardView: UIView {
         
         // 메뉴이름 레이블 설정
         nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        nameLabel.textColor = UIColor { traitCollection in
-            return traitCollection.userInterfaceStyle == .dark ? .white : .black // 다크모드일 때 화이트, 아니면 블랙
-        }
+        nameLabel.textColor = UIColor.dynamicTextColor
         nameLabel.numberOfLines = 0 // 여러 줄로 표시 가능
         nameLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         addSubview(nameLabel)
         
         // 가격 레이블 설정
         priceLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        priceLabel.textColor = UIColor { traitCollection in
-            return traitCollection.userInterfaceStyle == .dark ? .white : .black // 다크모드일 때 화이트, 아니면 블랙
-        }
+        priceLabel.textColor = UIColor.dynamicTextColor
         addSubview(priceLabel)
         
         // 버튼 설정
@@ -126,4 +123,36 @@ class CardView: UIView {
         delegate?.cardViewButtonTapped(cardInfo)
     }
     
+    
+// 다크/라이트 모드 변경 시 호출되는 메서드
+   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+       super.traitCollectionDidChange(previousTraitCollection)
+
+       // 색상 외형 변경이 있는 경우 업데이트
+       if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+           updateBorderColor()
+       }
+   }
+    
+// 보더 색상 업데이트 메서드
+    private func updateBorderColor() {
+        // 다크 모드와 라이트 모드에 따라 색상 설정
+        if self.traitCollection.userInterfaceStyle == .dark {
+            self.layer.borderColor = UIColor(named: "CardViewShadowColor")?.cgColor
+        } else {
+            self.layer.borderColor = UIColor(named: "CardViewShadowColor")?.cgColor
+        }
+    }
+
 }
+
+// 기본은 블랙, 다크모드일 시 화이트로 색상을 변경해주는 메서드 정의
+extension UIColor {
+    static var dynamicTextColor: UIColor {
+        return UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? .white : .black
+        }
+    }
+}
+
+
