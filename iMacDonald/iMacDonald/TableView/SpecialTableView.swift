@@ -36,7 +36,7 @@ final class SpecialTableView: SpecialTable {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        tableView.backgroundColor = UIColor.count.withAlphaComponent(0.7)
+        tableView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.9)
         
         // 테이블 뷰 설정
         setupTableView()
@@ -102,6 +102,7 @@ private extension SpecialTableView {
         } else {
             print("수량은 최대 50까지 가능합니다.")
         }
+        self.sendDelegate?.updateInfoLabel()
     }
     
     // 아이템 삭제
@@ -157,6 +158,15 @@ private extension SpecialTableView {
         
         tableView.layoutIfNeeded()
     }
+    
+    //그림자 효과 메서드
+    func addShadowToButton(_ button: UIButton) {
+        button.layer.shadowColor = UIColor.categoryText.cgColor
+        button.layer.shadowOpacity = 0.6
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.shadowRadius = 1  // 그림자 반경
+        button.layer.masksToBounds = false
+    }
 }
 
 extension SpecialTableView {
@@ -208,6 +218,13 @@ extension SpecialTableView {
         self.sendDelegate?.sendTableViewCellData()
         self.sendDelegate?.updateInfoLabel()
         
+        // 품목 추가 시 추가된 품목으로 스크롤 업데이트
+        if cart.count > 0 {
+            tableView.layoutIfNeeded()
+            let lastIndex = IndexPath(row: cart.count - 1, section: 0)
+            tableView.scrollToRow(at: lastIndex, at: .bottom, animated: true)
+        }
+        
         tableView.reloadData()
     }
     
@@ -224,6 +241,13 @@ extension SpecialTableView {
         configureCellButtons(for: cell, at: indexPath)
         
         cell.selectionStyle = .none
+        
+        // 3개 이상 품목이 담겨야 스크롤 가능
+        if self.cart.count > 3 {
+            self.tableView.isScrollEnabled = true
+        } else {
+            self.tableView.isScrollEnabled = false
+        }
         
         // + 버튼에 Long Press 제스처 추가
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
@@ -250,6 +274,11 @@ extension SpecialTableView {
         cell.decreaseButton.tag = indexPath.row
         cell.increaseButton.tag = indexPath.row
         cell.deleteButton.tag = indexPath.row
+        
+        // 버튼에 그림자 동작 설정
+        addShadowToButton(cell.decreaseButton)
+        addShadowToButton(cell.increaseButton)
+        addShadowToButton(cell.deleteButton)
         
         cell.decreaseButton.addTarget(self, action: #selector(decreaseQuantity), for: .touchUpInside)
         cell.increaseButton.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
