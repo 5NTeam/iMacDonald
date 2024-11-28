@@ -68,6 +68,10 @@ class CardView: UIView {
         // 버튼 설정
         let buttonImage = UIImage(systemName: "plus.circle.fill",
                                   withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .bold, scale: .large))
+        // 이미지가 버튼 크기에 맞게 조정되도록 설정
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentHorizontalAlignment = .fill
+        button.contentVerticalAlignment = .fill
         button.setImage(buttonImage, for: .normal)
         button.tintColor = UIColor(named: "PersonalColor")
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
