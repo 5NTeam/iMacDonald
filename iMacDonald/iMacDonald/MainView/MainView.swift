@@ -146,6 +146,9 @@ extension MainView: CategoryViewDelegate {
 
 extension MainView: CardViewDelegate {
     func cardViewButtonTapped(_ data: MenuData) {
-        self.cartView.insertCart(data)
+        UIView.animate(withDuration: 0.3) {
+            self.cartView.insertCart(data)
+            self.view.layoutIfNeeded()
+        }
     }
 }
