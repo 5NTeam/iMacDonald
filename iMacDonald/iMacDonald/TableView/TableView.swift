@@ -46,7 +46,6 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
     // CardView 버튼 클릭 이벤트 처리
     func cardViewButtonTapped(_ data: MenuData) {
         print("선택된 메뉴: \(data.name), 가격: \(data.price)")
-        
         // 같은 이름의 메뉴가 있는지 확인 후 처리
         if let index = cart.firstIndex(where: { $0.name == data.name }) {
             cart[index].quantity += data.quantity
