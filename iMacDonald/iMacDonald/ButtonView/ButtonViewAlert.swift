@@ -19,38 +19,65 @@ import UIKit
  *   - cancelTitle: 취소 버튼 텍스트
  *   - confirmAction: 확인 버튼 터치 시 실행될 클로저
  */
-func showAlert(
-    from viewController: UIViewController,
-    title: String,
-    message: String,
-    confirmTitle: String = "예",
-    cancelTitle: String = "아니오",
-    confirmAction: @escaping () -> Void
-) {
-    let alertController = UIAlertController(
-        title: title,
-        message: message,
-        preferredStyle: .alert
-    )
-    
-    // 취소 액션
-    let cancelAction = UIAlertAction(
-        title: cancelTitle,
-        style: .cancel
-    )
-    
-    // 확인 액션
-    let confirmAction = UIAlertAction(
-        title: confirmTitle,
-        style: .destructive
-    ) { _ in
-        confirmAction()
+enum AlertManager {
+    static func showAlert(
+        from viewController: UIViewController,
+        title: String,
+        message: String,
+        confirmTitle: String = "예",
+        cancelTitle: String = "아니오",
+        confirmAction: @escaping () -> Void
+    ) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        // 취소 액션
+        let cancelAction = UIAlertAction(
+            title: cancelTitle,
+            style: .cancel
+        )
+        
+        // 확인 액션
+        let confirmAction = UIAlertAction(
+            title: confirmTitle,
+            style: .destructive
+        ) { _ in
+            confirmAction()
+        }
+        
+        // 액션 추가
+        alertController.addAction(cancelAction)
+        alertController.addAction(confirmAction)
+        
+        // 알럿 표시
+        viewController.present(alertController, animated: true)
     }
     
-    // 액션 추가
-    alertController.addAction(cancelAction)
-    alertController.addAction(confirmAction)
-    
-    // 알럿 표시
-    viewController.present(alertController, animated: true)
+    static func succesePayment(
+        from viewController: UIViewController,
+        title: String,
+        message: String,
+        confirmTitle: String = "확인"
+    ) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        // 취소 액션
+        let cancelAction = UIAlertAction(
+            title: confirmTitle,
+            style: .cancel
+        )
+        
+        // 액션 추가
+        alertController.addAction(cancelAction)
+        
+        // 알럿 표시
+        viewController.present(alertController, animated: true)
+    }
 }

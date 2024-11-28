@@ -145,11 +145,11 @@ class ButtonView: UIView  {
      * 서브뷰들을 구성하고 추가하는 메서드
      */
     private func configureSubviews() {
-        addSubview(infoStackView)
+        self.addSubview(infoStackView)
         infoStackView.addArrangedSubview(totalQuantityLabel)
         infoStackView.addArrangedSubview(totalAmountLabel)
         
-        addSubview(buttonStackView)
+        self.addSubview(buttonStackView)
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(paymentButton)
     }
@@ -159,14 +159,14 @@ class ButtonView: UIView  {
      */
     private func setupConstraints() {
         infoStackView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(10)
+            make.bottom.equalTo(buttonStackView.snp.top).offset(-15)
+            make.leading.trailing.equalToSuperview().inset(20)
             make.width.equalTo(Constants.infoStackViewWidth)
         }
         
         buttonStackView.snp.makeConstraints { make in
-            make.left.equalTo(safeAreaLayoutGuide).offset(Constants.horizontalPadding)
-            make.right.equalTo(safeAreaLayoutGuide).offset(-Constants.horizontalPadding)
+            make.leading.equalTo(safeAreaLayoutGuide).offset(Constants.horizontalPadding)
+            make.trailing.equalTo(safeAreaLayoutGuide).offset(-Constants.horizontalPadding)
             make.bottom.equalTo(safeAreaLayoutGuide).offset(-Constants.horizontalPadding)
             make.height.equalTo(Constants.buttonHeight)
         }
@@ -224,7 +224,8 @@ class ButtonView: UIView  {
      * - Parameter quantity: 표시할 총 수량
      */
     func updateTotalQuantity(_ quantity: Int) {
-        totalQuantityLabel.text = "총 \(quantity)개"
+        self.totalQuantityLabel.text = "총 \(quantity)개"
+        self.layoutIfNeeded()
     }
     
     /**
@@ -232,7 +233,8 @@ class ButtonView: UIView  {
      * - Parameter amount: 표시할 총 금액
      */
     func updateTotalAmount(_ amount: Int) {
-        totalAmountLabel.text = "\(amount.formattedWithSeparator)원"
+        self.totalAmountLabel.text = "\(amount.formattedWithSeparator)원"
+        self.layoutIfNeeded()
     }
 }
 
