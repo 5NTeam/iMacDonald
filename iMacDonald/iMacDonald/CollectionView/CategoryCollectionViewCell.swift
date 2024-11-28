@@ -18,13 +18,13 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     // 카테고리의 레이블 값 정의
     private let categoryLabel: UILabel = {
         let label = UILabel()
-        label.text = "Vegan"
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         label.textColor = UIColor.categoryText
         label.backgroundColor = UIColor.category
         label.clipsToBounds = true
         label.layer.cornerRadius = 20
+        label.sizeToFit()
         
         return label
     }()
@@ -37,14 +37,11 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = UIColor.clear
         contentView.addSubview(categoryLabel)
         
-        let labelWidthSize = categoryLabel.intrinsicContentSize.width
-        let labelHeightSize = categoryLabel.intrinsicContentSize.height
-        categoryLabel.sizeToFit()
-        
         categoryLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.width.equalTo(labelWidthSize + 40)
-            $0.height.equalTo(labelHeightSize + 20)
+            $0.top.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.leading.equalToSuperview()
         }
     }
     
@@ -60,7 +57,6 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        categoryLabel.text = "Vegan"
         categoryLabel.textAlignment = .center
         categoryLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         categoryLabel.textColor = UIColor.categoryText
@@ -85,5 +81,16 @@ extension CategoryCollectionViewCell {
         self.categoryLabel.backgroundColor = UIColor.personal
         self.categoryLabel.textColor = .white
         self.categoryLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        
+        scaleEffect()
+    }
+    
+    private func scaleEffect() {
+        UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseInOut]) {
+            self.categoryLabel.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.categoryLabel.transform = .identity
+            }
+        }
     }
 }
