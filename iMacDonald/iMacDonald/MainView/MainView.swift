@@ -80,7 +80,7 @@ private extension MainView {
         scrollView.addSubview(menuGridStackView)
         
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(categoryView.snp.bottom)
+            make.top.equalTo(categoryView.snp.bottom).offset(13) // 13포인트의 여백 추가
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
