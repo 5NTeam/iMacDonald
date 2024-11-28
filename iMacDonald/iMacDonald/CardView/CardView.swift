@@ -25,7 +25,7 @@ class CardView: UIView {
         super.init(frame: .zero)
         itemName = name
         itemPrice = price
-        itemImage = image // 이미지가 넘어가는게 확인되는게 아니면 이미지 이름을 넘기면 되고 , MenuData 구조체를 재사용하지말고 새로 구조체를 만들자 
+        itemImage = image // 이미지가 넘어가는게 확인되는게 아니면 이미지 이름을 넘기면 되고 , MenuData 구조체를 재사용하지말고 새로 구조체를 만들자
         setupView() // 뷰
         configure(name: name, price: price, image: image) // 데이터
     }
@@ -43,29 +43,33 @@ class CardView: UIView {
         self.layer.shadowOpacity = 0.2
         self.layer.shadowOffset = CGSize(width: 0, height: 2)
         self.layer.shadowRadius = 4
-        self.backgroundColor = .white
+        self.backgroundColor = UIColor.systemBackground
         
         // 이미지뷰 설정
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .yellow
+        imageView.backgroundColor = UIColor.systemBackground
         addSubview(imageView)
         
         // 메뉴이름 레이블 설정
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 30)
-        nameLabel.textColor = .black
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        nameLabel.textColor = UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? .white : .black // 다크모드일 때 화이트, 아니면 블랙
+        }
         nameLabel.numberOfLines = 0 // 여러 줄로 표시 가능
         nameLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         addSubview(nameLabel)
         
         // 가격 레이블 설정
-        priceLabel.font = UIFont.systemFont(ofSize: 20)
-        priceLabel.textColor = .darkGray
+        priceLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        priceLabel.textColor = UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? .white : .black // 다크모드일 때 화이트, 아니면 블랙
+        }
         addSubview(priceLabel)
         
         // 버튼 설정
         let buttonImage = UIImage(systemName: "plus.circle.fill",
-                                  withConfiguration: UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large))
+                                  withConfiguration: UIImage.SymbolConfiguration(pointSize: 40, weight: .bold, scale: .large))
         button.setImage(buttonImage, for: .normal)
         button.tintColor = UIColor(named: "PersonalColor")
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
@@ -84,23 +88,24 @@ class CardView: UIView {
         }
         // 메뉴이름 제약 조건
         nameLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(30)
-            make.leading.equalToSuperview().offset(20)
+            make.top.equalTo(imageView.snp.bottom)
+            make.leading.equalToSuperview().offset(10)
             make.trailing.lessThanOrEqualTo(button.snp.leading).offset(-10) // 버튼과 겹치지 않도록 설정
+            make.height.equalToSuperview().multipliedBy(0.2)
         }
         // 가격 제약 조건
         priceLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(20)
-            make.leading.equalToSuperview().offset(20)
+            make.top.equalTo(nameLabel.snp.bottom)
+            make.leading.equalToSuperview().offset(10)
+            make.height.equalToSuperview().multipliedBy(0.2)
             make.trailing.lessThanOrEqualTo(button.snp.leading).offset(-10) // 버튼과 겹치지 않도록 설정
-            make.bottom.lessThanOrEqualToSuperview().offset(-10)
         }
         // 버튼 제약 조건
         button.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-20) // 카드뷰 오른쪽에서 20pt
-            make.bottom.equalToSuperview().offset(-10) // 카드뷰 아래에서 10pt
-            make.width.equalToSuperview().multipliedBy(0.3) // 카드뷰 너비의 30%
-            make.height.equalToSuperview().multipliedBy(0.3) // 카드뷰 높이의 30%
+            make.trailing.equalToSuperview().offset(-10) // 카드뷰 오른쪽에서 10pt
+            make.centerY.equalTo(priceLabel.snp.centerY) // 가격과 수평
+            make.width.equalToSuperview().multipliedBy(0.2) // 카드뷰 너비의 20%
+            make.height.equalToSuperview().multipliedBy(0.2) // 카드뷰 높이의 20%
         }
     }
     
@@ -113,7 +118,7 @@ class CardView: UIView {
     
     // 버튼이 눌렸을 때 호출되는 메서드
     @objc private func buttonTapped() {
-        let cardInfo = MenuData(name: itemName, price: itemPrice, image: itemImage , category: nil ) // MenuData 구조체 재사용해서 담아서 보내줌 
+        let cardInfo = MenuData(name: itemName, price: itemPrice, image: itemImage , category: nil ) // MenuData 구조체 재사용해서 담아서 보내줌
         delegate?.cardViewButtonTapped(cardInfo)
     }
     
