@@ -25,6 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = MenuViewController()
         
         // 이 메서드를 반드시 작성해줘야 윈도우가 활성화 됨.
+        window.rootViewController = ViewController()
         window.makeKeyAndVisible()
         self.window = window // 위의 var window 선언(넣어주겠다는 뜻)
     }
