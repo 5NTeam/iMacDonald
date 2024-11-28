@@ -189,6 +189,9 @@ extension SpecialTableView {
         cell.priceLabel.text = "\(item.price)원"
         cell.quantityLabel.text = "\(item.quantity)"
         
+        // 이미지 설정 추가
+        cell.menuImageView.image = item.image
+        
         // 버튼에 태그 및 동작 설정
         cell.decreaseButton.tag = indexPath.row
         cell.increaseButton.tag = indexPath.row
