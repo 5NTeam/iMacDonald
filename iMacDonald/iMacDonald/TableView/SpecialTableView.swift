@@ -4,7 +4,6 @@
 //
 //  Created by 장상경 on 11/28/24.
 //
-
 import UIKit
 import SnapKit
 
@@ -15,19 +14,27 @@ final class SpecialTableView: SpecialTable {
     private let tableView = UITableView() // 테이블 뷰 선언
     private var cart: [MenuData] = [] // 메뉴 리스트 데이터
     private var increaseTimer: Timer? // 긴 눌림 동작에 사용할 타이머
+    private let buttonView = ButtonView() // ButtonView 추가
     
     weak var delegate: CardViewDelegate?
+    weak var buttonDelegate: ButtonViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         tableView.backgroundColor = UIColor.count.withAlphaComponent(0.7)
         
-        // 테이블 뷰 설정
+        // ButtonView를 먼저 설정
+        setupButtonView()
+        // 그 다음 TableView 설정
         setupTableView()
         
-        // 테이블 뷰를 처음에는 숨김
-        tableView.isHidden = false
+        // 초기에는 모두 숨김 처리
+        tableView.isHidden = true
+        buttonView.isHidden = true
+        
+        // ButtonView delegate 설정
+        buttonView.delegate = self
         
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
@@ -40,19 +47,40 @@ final class SpecialTableView: SpecialTable {
  
 private extension SpecialTableView {
     // 테이블 뷰 초기화 메서드
-    func setupTableView() {
-        self.addSubview(tableView)
+    private func setupTableView() {
+        addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
         
         // 셀 등록 및 레이아웃 설정
         tableView.register(MenuTableViewCell.self, forCellReuseIdentifier: "MenuCell")
         tableView.rowHeight = 90
+        
+        // 테이블뷰의 제약조건 설정
         tableView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(buttonView.snp.top)
+            make.height.equalTo(0) // 초기 높이 설정 추가
+        }
+    }
+    
+    // ButtonView 설정 메서드
+    private func setupButtonView() {
+        addSubview(buttonView)
+        buttonView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.height.equalTo(0) // 처음에는 높이를 0으로 설정
+            make.height.equalTo(100)
         }
+    }
+    
+    // 총 수량과 금액 계산하고 업데이트하는 메서드
+    private func updateTotalInfo() {
+        let totalQuantity = cart.reduce(0) { $0 + $1.quantity }
+        let totalAmount = cart.reduce(0) { $0 + ($1.price * $1.quantity) }
+        
+        buttonView.updateTotalQuantity(totalQuantity)
+        buttonView.updateTotalAmount(totalAmount)
     }
     
     // 수량 감소
@@ -65,12 +93,20 @@ private extension SpecialTableView {
         // 수량이 0이 되면 해당 항목 삭제
         if cart[index].quantity == 0 {
             cart.remove(at: index)
+            
+            // 카트가 비었으면 테이블뷰와 버튼뷰를 숨김
+            if cart.isEmpty {
+                tableView.isHidden = true
+                buttonView.isHidden = true
+            }
+            
             tableView.reloadData()
         } else {
             tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
         }
         
         updateTableViewHeight()
+        updateTotalInfo()
     }
     
     // 수량 증가
@@ -82,6 +118,7 @@ private extension SpecialTableView {
         if cart[index].quantity < 50 {
             cart[index].quantity += 1
             tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+            updateTotalInfo()
         } else {
             print("수량은 최대 50까지 가능합니다.")
         }
@@ -95,13 +132,20 @@ private extension SpecialTableView {
         // 삭제하려는 항목 제거
         cart.remove(at: row)
         
+        // 카트가 비었으면 테이블뷰와 버튼뷰를 숨김
+        if cart.isEmpty {
+            tableView.isHidden = true
+            buttonView.isHidden = true
+        }
+        
         // 삭제 후 테이블 뷰 업데이트
         tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .none)
         
         // 테이블 뷰 높이 업데이트
         updateTableViewHeight()
+        updateTotalInfo()
         
-        // 삭제 후 테이블을 다시 업데이트 (중요)
+        // 삭제 후 테이블을 다시 업데이트
         tableView.reloadData()
     }
     
@@ -149,11 +193,14 @@ extension SpecialTableView {
             tableView.reloadData()
         }
         
-        if self.cart.count > 0 {
+        // 카트에 아이템이 있을 때만 테이블뷰와 버튼뷰를 보여줌
+        if !cart.isEmpty {
             tableView.isHidden = false
+            buttonView.isHidden = false
         }
-        updateTableViewHeight()
         
+        updateTableViewHeight()
+        updateTotalInfo()
         tableView.reloadData()
     }
     
@@ -188,8 +235,6 @@ extension SpecialTableView {
         cell.nameLabel.text = item.name
         cell.priceLabel.text = "\(item.price)원"
         cell.quantityLabel.text = "\(item.quantity)"
-        
-        // 이미지 설정 추가
         cell.menuImageView.image = item.image
         
         // 버튼에 태그 및 동작 설정
@@ -203,3 +248,15 @@ extension SpecialTableView {
     }
 }
 
+// ButtonViewDelegate 구현
+extension SpecialTableView: ButtonViewDelegate {
+    func didTapCancelButton() {
+        // 현재 ViewController로 이벤트 전달
+        buttonDelegate?.didTapCancelButton()
+    }
+    
+    func didTapPaymentButton() {
+        // 현재 ViewController로 이벤트 전달
+        buttonDelegate?.didTapPaymentButton()
+    }
+}

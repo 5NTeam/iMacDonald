@@ -55,6 +55,7 @@ private extension MainView {
     
     func setupCartView() {
         cartView.delegate = self
+        cartView.buttonDelegate = self  // 이 줄 추가
         view.addSubview(cartView)
         
         cartView.snp.makeConstraints { make in
@@ -147,5 +148,36 @@ extension MainView: CategoryViewDelegate {
 extension MainView: CardViewDelegate {
     func cardViewButtonTapped(_ data: MenuData) {
         self.cartView.insertCart(data)
+    }
+}
+
+extension MainView: ButtonViewDelegate {
+    func didTapCancelButton() {
+        showAlert(
+            from: self,
+            title: "주문 취소",
+            message: "주문을 취소하시겠습니까?",
+            confirmTitle: "예",
+            cancelTitle: "아니오"
+        ) {
+            // 확인 버튼을 눌렀을 때의 동작
+            self.cartView.didTapCancelButton()
+        }
+        
+    }
+    
+    func didTapPaymentButton() {
+        showAlert(
+            from: self,
+            title: "결제 진행",
+            message: "결제를 진행하시겠습니까?",
+            confirmTitle: "예",
+            cancelTitle: "아니오"
+        ) {
+            // 확인 버튼을 눌렀을 때의 동작
+            print("Payment confirmed")
+            // 여기에 결제 성공 후의 동작 추가
+            self.cartView.didTapCancelButton() // 결제 후 카트 비우기
+        }
     }
 }
