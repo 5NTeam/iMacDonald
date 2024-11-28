@@ -114,7 +114,7 @@ class CardView: UIView {
     // 데이터 구성
     private func configure(name: String, price: Int, image: UIImage?) {
         nameLabel.text = name
-        priceLabel.text = "\(price)원"
+        priceLabel.text = "\(price.formattedWithSeparator)원"
         imageView.image = image
     }
     

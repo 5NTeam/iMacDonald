@@ -15,6 +15,8 @@ final class MainView: UIViewController {
     
     private var cartView = SpecialTableView()
     
+    private let buttonView = ButtonView()
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -50,16 +52,30 @@ private extension MainView {
         view.backgroundColor = .systemBackground
         setupCategory()
         setupScrollView()
+        setupButtonView()
         setupCartView()
+    }
+    
+    func setupButtonView() {
+        buttonView.delegate = self
+        buttonView.isUserInteractionEnabled = true
+        buttonView.isHidden = true
+        view.addSubview(buttonView)
+        
+        buttonView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(140)
+        }
     }
     
     func setupCartView() {
         cartView.delegate = self
-        cartView.buttonDelegate = self  // MainView를 buttonDelegate로 설정
+        cartView.sendDelegate = self
         view.addSubview(cartView)
         
         cartView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(buttonView.snp.top)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(270)
         }
@@ -83,7 +99,7 @@ private extension MainView {
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(categoryView.snp.bottom).offset(13) // 13포인트의 여백 추가
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
         }
         
         menuGridStackView.snp.makeConstraints { make in
@@ -156,29 +172,44 @@ extension MainView: CardViewDelegate {
 
 extension MainView: ButtonViewDelegate {
     func didTapCancelButton() {
-        showAlert(
-            from: self,
-            title: "주문 취소",
-            message: "주문을 취소하시겠습니까?",
-            confirmTitle: "예",
-            cancelTitle: "아니오"
-        ) {
-            // 확인 버튼을 눌렀을 때의 동작
-            self.cartView.clearCart()  // didTapCancelButton() 대신 clearCart() 호출
+        guard self.cartView.checkCartCount() > 0 else {
+            return
+        }
+        AlertManager.showAlert(from: self, title: "주문 취소", message: "장바구니의 항목을 모두 삭제하시겠습니까?") {
+            self.cartView.clearCart()
         }
     }
     
     func didTapPaymentButton() {
-        showAlert(
-            from: self,
-            title: "결제 진행",
-            message: "결제를 진행하시겠습니까?",
-            confirmTitle: "예",
-            cancelTitle: "아니오"
-        ) {
-            // 확인 버튼을 눌렀을 때의 동작
-            print("Payment confirmed")
-            self.cartView.clearCart()  // didTapCancelButton() 대신 clearCart() 호출
+        guard self.cartView.checkCartCount() > 0 else {
+            return
+        }
+        AlertManager.showAlert(from: self, title: "결제하기", message: "모든 상품을 구매하시겠습니까?") {
+            self.cartView.clearCart()
+            AlertManager.succesePayment(from: self, title: "결제 성공", message: "상품의 결제가 완료되었습니다!!")
+        }
+    }
+}
+
+extension MainView: SpecialTableViewDelegate {
+    func updateInfoLabel() {
+        UIView.animate(withDuration: 0.3) {
+            guard self.cartView.checkCartCount() > 0 else {
+                return
+            }
+            
+            self.buttonView.updateTotalQuantity(self.cartView.checkCartCount())
+            self.buttonView.updateTotalAmount(self.cartView.calcurateTotalPrice())
+        }
+    }
+    
+    func sendTableViewCellData() {
+        UIView.animate(withDuration: 0.3) {
+            guard self.cartView.checkCartCount() > 0 else {
+                self.buttonView.isHidden = true
+                return
+            }
+            self.buttonView.isHidden = false
         }
     }
 }
