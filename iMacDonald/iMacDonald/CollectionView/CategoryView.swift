@@ -28,12 +28,12 @@ final class CategoryView: UIView {
     override init(frame: CGRect) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 90, height: 50)
-        layout.minimumLineSpacing = 5
+        layout.itemSize = CGSize(width: 100, height: 40)
+        layout.minimumInteritemSpacing = 10
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(frame: frame)
-
+        
         setupUIConfig()
     }
     
@@ -44,8 +44,8 @@ final class CategoryView: UIView {
     required init?(coder: NSCoder) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 90, height: 50)
-        layout.minimumLineSpacing = 10
+        layout.itemSize = CGSize(width: 100, height: 40)
+        layout.minimumInteritemSpacing = 10
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(coder: coder)
@@ -92,7 +92,7 @@ private extension CategoryView {
         collectionView.snp.makeConstraints {
             $0.top.equalTo(titleLogo.snp.bottom)
             $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-20)
             $0.height.equalTo(50)
         }
     }
@@ -112,43 +112,44 @@ extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
         let isSelected: Bool = indexPath.item == currentState
         cell.selectCategory(isSelected)
         
+        // 카테고리를 선택하면 자동으로 스크롤 되도록 설정
+        if isSelected {
+            let targetOffsetX: CGFloat
+            
+            if cell.frame.origin.x < collectionView.contentSize.width - collectionView.bounds.width {
+                targetOffsetX = indexPath.item != 0 ? cell.frame.origin.x - 70 : cell.frame.origin.x
+            } else {
+                targetOffsetX = collectionView.contentSize.width - collectionView.bounds.width
+            }
+            
+            // 애니메이션으로 스크롤 이동
+            collectionView.setContentOffset(CGPoint(x: targetOffsetX, y: 0), animated: true)
+        }
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         switch indexPath.item {
-        case 0:
-            self.state = .all
-        case 1:
-            self.state = .burger
-        case 2:
-            self.state = .chicken
-        case 3:
-            self.state = .vegan
-        case 4:
-            self.state = .side
-        case 5:
-            self.state = .drink
-        default:
-            break
+        case 0: self.state = .all
+        case 1: self.state = .burger
+        case 2: self.state = .chicken
+        case 3: self.state = .vegan
+        case 4: self.state = .side
+        case 5: self.state = .drink
+        default: break
         }
         
         switch self.state {
-        case .all:
-            self.currentState = 0
-        case .burger:
-            self.currentState = 1
-        case .chicken:
-            self.currentState = 2
-        case .vegan:
-            self.currentState = 3
-        case .side:
-            self.currentState = 4
-        case .drink:
-            self.currentState = 5
+        case .all: self.currentState = 0
+        case .burger: self.currentState = 1
+        case .chicken: self.currentState = 2
+        case .vegan: self.currentState = 3
+        case .side: self.currentState = 4
+        case .drink: self.currentState = 5
         }
-                
+        
         collectionView.reloadData()
         
         delegate?.categoryDidChange(self.state)
