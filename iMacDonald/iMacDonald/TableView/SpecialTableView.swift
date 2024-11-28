@@ -41,7 +41,7 @@ final class SpecialTableView: SpecialTable {
         buttonView.isHidden = true
         
         // ButtonView delegate 설정
-        buttonView.delegate = self
+        buttonView.delegate = self  // 이 부분이 있는지 확인
         
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
@@ -74,6 +74,7 @@ private extension SpecialTableView {
     // ButtonView 설정 메서드
     private func setupButtonView() {
         addSubview(buttonView)
+        buttonView.isUserInteractionEnabled = true  // 추가
         buttonView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
@@ -253,17 +254,30 @@ extension SpecialTableView {
         cell.increaseButton.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
         cell.deleteButton.addTarget(self, action: #selector(deleteItem), for: .touchUpInside)
     }
+    
+    func clearCart() {
+        // 카트 비우기
+        cart.removeAll()
+        tableView.reloadData()
+        
+        // 뷰 숨기기
+        tableView.isHidden = true
+        buttonView.isHidden = true
+        
+        updateTableViewHeight()
+        updateTotalInfo()
+    }
 }
 
 // ButtonViewDelegate 구현
 extension SpecialTableView: ButtonViewDelegate {
     func didTapCancelButton() {
-        // 현재 ViewController로 이벤트 전달
+        print("SpecialTableView: Cancel button delegate called")
         buttonDelegate?.didTapCancelButton()
     }
     
     func didTapPaymentButton() {
-        // 현재 ViewController로 이벤트 전달
+        print("SpecialTableView: Payment button delegate called")
         buttonDelegate?.didTapPaymentButton()
     }
 }
