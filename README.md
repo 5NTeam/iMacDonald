@@ -2,7 +2,7 @@
 
 ## <img src="https://github.com/user-attachments/assets/d8170c2c-8429-4464-a4ce-6553d13f7649" width="40"> Introduction to the Project
 
-![무제 001](https://github.com/user-attachments/assets/4a738bdd-1c96-4da1-a8ea-142ee62c8ae0)
+![iMacDoanld PPL 001](https://github.com/user-attachments/assets/053d8eec-c163-4adf-b6aa-de25665c737d)
 
 **Project Topic**: 한 페이지 안에 모바일 키오스크 구현하기
 
