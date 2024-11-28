@@ -8,6 +8,10 @@
 import UIKit
 import SnapKit
 
+/// 카테고리 변경 델리게이트 프로토콜
+protocol CategoryViewDelegate: AnyObject {
+    func categoryDidChange(_ category: CollectionViewTestMenuCategory)
+}
 
 /// 커스텀 카테고리뷰
 final class CategoryView: UIView {
@@ -16,6 +20,8 @@ final class CategoryView: UIView {
     private let titleLogo = UILabel()
     private var state: CollectionViewTestMenuCategory = .all
     private var currentState: Int = 0
+    
+    weak var delegate: CategoryViewDelegate?
     
     /// 카테고리뷰 생성 이니셜라이저
     /// - Parameter frame: 카테고리뷰가 가지는 frame = .zero
@@ -144,5 +150,7 @@ extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
         }
                 
         collectionView.reloadData()
+        
+        delegate?.categoryDidChange(self.state)
     }
 }
