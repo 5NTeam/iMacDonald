@@ -12,7 +12,8 @@ import SnapKit
 final class MainView: UIViewController {
     // MARK: - UI Components
     private let categoryView = CategoryView()
-    private let menuDataViewController = MenuDataViewController()
+    
+    private var cartView = SpecialTableView()
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -40,7 +41,6 @@ final class MainView: UIViewController {
         super.viewDidLoad()
         setupUI()
         updateMenuItems()
-        addMenuDataViewController()
     }
 }
 
@@ -50,6 +50,18 @@ private extension MainView {
         view.backgroundColor = .systemBackground
         setupCategory()
         setupScrollView()
+        setupCartView()
+    }
+    
+    func setupCartView() {
+        cartView.delegate = self
+        view.addSubview(cartView)
+        
+        cartView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(270)
+        }
     }
     
     func setupCategory() {
@@ -76,18 +88,6 @@ private extension MainView {
         menuGridStackView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView).inset(UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
             make.width.equalTo(scrollView).offset(-32)
-        }
-    }
-    
-    func addMenuDataViewController() {
-        addChild(menuDataViewController)
-        view.addSubview(menuDataViewController.view)
-        menuDataViewController.didMove(toParent: self)
-        
-        menuDataViewController.view.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.height.equalTo(0) // 초기 높이는 0
         }
     }
 }
@@ -126,7 +126,8 @@ private extension MainView {
         let cardView = CardView(name: menuItem.name,
                               price: menuItem.price,
                               image: menuItem.image)
-        cardView.delegate = menuDataViewController
+        
+        cardView.delegate = self
         
         cardView.snp.makeConstraints { make in
             make.height.equalTo(200)
@@ -140,5 +141,11 @@ private extension MainView {
 extension MainView: CategoryViewDelegate {
     func categoryDidChange(_ category: Categorys) {
         selectedCategory = category
+    }
+}
+
+extension MainView: CardViewDelegate {
+    func cardViewButtonTapped(_ data: MenuData) {
+        self.cartView.insertCart(data)
     }
 }
