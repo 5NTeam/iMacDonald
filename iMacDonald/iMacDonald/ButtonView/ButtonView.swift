@@ -75,7 +75,7 @@ class ButtonView: UIView  {
         button.setTitle("취소", for: .normal)
         button.setTitleColor(UIColor.personal, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: Constants.fontSize, weight: .bold)
-        button.backgroundColor = .white
+        button.backgroundColor = .systemBackground
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.personal.cgColor
         button.layer.cornerRadius = Constants.cornerRadius
@@ -86,6 +86,7 @@ class ButtonView: UIView  {
         applyShadow(to: button)
         return button
     }()
+    
     // 다크모드 전환 시 호출되는 메서드
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -133,7 +134,7 @@ class ButtonView: UIView  {
      * UI 초기 설정을 수행하는 메서드
      */
     private func setupUI() {
-        backgroundColor = .white
+        backgroundColor = .systemBackground
         configureSubviews()
         setupConstraints()
     }
@@ -172,7 +173,6 @@ class ButtonView: UIView  {
     /**
      * 접근성 레이블을 설정하는 메서드
      */
-
     private func setupAccessibility() {
         // 취소 버튼을 눌렀을 때 "주문 취소하기"라고 읽어줍니다
         cancelButton.accessibilityLabel = "주문 취소하기"
