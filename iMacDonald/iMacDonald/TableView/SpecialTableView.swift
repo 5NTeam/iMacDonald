@@ -216,9 +216,23 @@ extension SpecialTableView {
         cell.increaseButton.tag = indexPath.row
         cell.deleteButton.tag = indexPath.row
         
+        // 버튼에 그림자 동작 설정
+        addShadowToButton(cell.decreaseButton)
+        addShadowToButton(cell.increaseButton)
+        addShadowToButton(cell.deleteButton)
+        
         cell.decreaseButton.addTarget(self, action: #selector(decreaseQuantity), for: .touchUpInside)
         cell.increaseButton.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
         cell.deleteButton.addTarget(self, action: #selector(deleteItem), for: .touchUpInside)
     }
+    //그림자 효과 메서드
+    func addShadowToButton(_ button: UIButton) {
+        button.layer.shadowColor = UIColor.categoryText.cgColor
+        button.layer.shadowOpacity = 0.6
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.shadowRadius = 1  // 그림자 반경
+        button.layer.masksToBounds = false
+    }
+    
 }
 
