@@ -76,7 +76,7 @@ class MenuTableViewCell: UITableViewCell {
         decreaseButton.setTitleColor(.black, for: .normal)
         decreaseButton.layer.cornerRadius = 16
         decreaseButton.backgroundColor = .side
-        decreaseButton.layer.shadowColor = UIColor.black.cgColor
+        decreaseButton.layer.shadowColor = UIColor.count.cgColor
         decreaseButton.layer.shadowOffset = CGSize(width: 0, height: 3)
         decreaseButton.layer.shadowOpacity = 0.2
         decreaseButton.layer.shadowRadius = 1
@@ -101,7 +101,7 @@ class MenuTableViewCell: UITableViewCell {
         increaseButton.setTitleColor(.black, for: .normal)
         increaseButton.layer.cornerRadius = 16
         increaseButton.backgroundColor = .side
-        increaseButton.layer.shadowColor = UIColor.black.cgColor
+        increaseButton.layer.shadowColor = UIColor.count.cgColor
         increaseButton.layer.shadowOffset = CGSize(width: 0, height: 3)
         increaseButton.layer.shadowOpacity = 0.2
         increaseButton.layer.shadowRadius = 1
@@ -116,7 +116,7 @@ class MenuTableViewCell: UITableViewCell {
         deleteButton.tintColor = .personal
         deleteButton.layer.cornerRadius = 16
         deleteButton.backgroundColor = .side
-        deleteButton.layer.shadowColor = UIColor.black.cgColor
+        deleteButton.layer.shadowColor = UIColor.count.cgColor
         deleteButton.layer.shadowOffset = CGSize(width: 0, height: 3)
         deleteButton.layer.shadowOpacity = 0.2
         deleteButton.layer.shadowRadius = 1

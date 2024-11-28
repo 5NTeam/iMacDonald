@@ -28,40 +28,18 @@ import SnapKit
 class MenuDataViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CardViewDelegate {
     
     let tableView = UITableView() // 테이블 뷰 선언
-    var menuList: [MenuData] = [] // 메뉴 리스트 데이터
-    let testCardView = CardView(name: "치즈버거", price: 4000, image: UIImage(named: "cheeseburger"))
-    let testCardView1 = CardView(name: "치킨", price: 4500, image: UIImage(named: "chicken"))
+    var cart: [MenuData] = [] // 메뉴 리스트 데이터
     var increaseTimer: Timer? // 긴 눌림 동작에 사용할 타이머
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 초기 화면 설정
-        testCardView.delegate = self
-        testCardView1.delegate = self
         view.backgroundColor = .count
         tableView.backgroundColor = UIColor.white.withAlphaComponent(0.1)
-
         
         // 테이블 뷰 설정
         setupTableView()
-        
-        // 테스트용 CardView 추가
-        view.addSubview(testCardView)
-        testCardView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.width.equalToSuperview().multipliedBy(0.5)
-            make.height.equalTo(testCardView.snp.width).multipliedBy(1.2)
-        }
-        view.addSubview(testCardView1)
-        testCardView1.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.width.equalToSuperview().multipliedBy(0.5)
-            make.height.equalTo(testCardView1.snp.width).multipliedBy(1.2)
-        }
-        
+                
         // 테이블 뷰를 처음에는 숨김
         tableView.isHidden = true
     }
@@ -87,11 +65,11 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
         print("선택된 메뉴: \(data.name), 가격: \(data.price)")
         
         // 같은 이름의 메뉴가 있는지 확인 후 처리
-        if let index = menuList.firstIndex(where: { $0.name == data.name }) {
-            menuList[index].quantity += data.quantity
+        if let index = cart.firstIndex(where: { $0.name == data.name }) {
+            cart[index].quantity += data.quantity
             tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
         } else {
-            menuList.append(data)
+            cart.append(data)
             tableView.reloadData()
         }
         
@@ -107,7 +85,7 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
     
     // 테이블 뷰 행 수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menuList.count
+        return cart.count
     }
     
     // 테이블 뷰 셀 구성
@@ -128,7 +106,7 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
     
     // 셀 버튼 설정
     func configureCellButtons(for cell: MenuTableViewCell, at indexPath: IndexPath) {
-        let item = menuList[indexPath.row]
+        let item = cart[indexPath.row]
         
         // 데이터 설정
         cell.nameLabel.text = item.name
@@ -148,13 +126,13 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
     // 수량 감소
     @objc func decreaseQuantity(sender: UIButton) {
         let index = sender.tag
-        guard index < menuList.count else { return }
+        guard index < cart.count else { return }
         
-        menuList[index].quantity -= 1
+        cart[index].quantity -= 1
         
         // 수량이 0이 되면 해당 항목 삭제
-        if menuList[index].quantity == 0 {
-            menuList.remove(at: index)
+        if cart[index].quantity == 0 {
+            cart.remove(at: index)
             tableView.reloadData()
         } else {
             tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
@@ -166,11 +144,11 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
     // 수량 증가
     @objc func increaseQuantity(sender: UIButton) {
         let index = sender.tag
-        guard index < menuList.count else { return }
+        guard index < cart.count else { return }
         
         // 수량 증가: 최대값 50 제한
-        if menuList[index].quantity < 50 {
-            menuList[index].quantity += 1
+        if cart[index].quantity < 50 {
+            cart[index].quantity += 1
             tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
         } else {
             print("수량은 최대 50까지 가능합니다.")
@@ -180,10 +158,10 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
     // 아이템 삭제
     @objc func deleteItem(sender: UIButton) {
             let row = sender.tag
-             guard row < menuList.count else { return }
+             guard row < cart.count else { return }
              
              // 삭제하려는 항목 제거
-             menuList.remove(at: row)
+             cart.remove(at: row)
              
              // 삭제 후 테이블 뷰 업데이트
             tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .none)
@@ -197,7 +175,7 @@ class MenuDataViewController: UIViewController, UITableViewDelegate, UITableView
     
     // 긴 눌림 제스처 처리
     @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
-        guard let button = gesture.view as? UIButton, button.tag < menuList.count else { return }
+        guard let button = gesture.view as? UIButton, button.tag < cart.count else { return }
         
         switch gesture.state {
         case .began:
