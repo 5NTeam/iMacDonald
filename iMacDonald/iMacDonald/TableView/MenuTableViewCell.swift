@@ -19,7 +19,6 @@ class MenuTableViewCell: UITableViewCell {
     let increaseButton = UIButton() // 수량 증가 버튼
     let deleteButton = UIButton() // 삭제 버튼
     
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI() // 셀의 UI를 설정하는 커스텀 메서드
@@ -59,22 +58,18 @@ class MenuTableViewCell: UITableViewCell {
             make.leading.equalTo(nameLabel)
         }
         
-        
         // 스택뷰
         let buttonStackView = UIStackView(arrangedSubviews: [decreaseButton, quantityLabel, increaseButton, deleteButton])
         buttonStackView.axis = .horizontal
-        buttonStackView.spacing = 8
+        buttonStackView.spacing = 20
         buttonStackView.alignment = .center
         contentView.addSubview(buttonStackView)
         
         // 스택뷰 제약
         buttonStackView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().offset(-16)
-            
+            make.trailing.equalToSuperview().offset(-30)
         }
-        
-        
         
         // 수량 감소 버튼
         decreaseButton.setTitle("-", for: .normal)
@@ -87,7 +82,7 @@ class MenuTableViewCell: UITableViewCell {
         decreaseButton.layer.shadowRadius = 1
         decreaseButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().offset(-110)
+            make.trailing.equalToSuperview().offset(-140)
             make.width.height.equalTo(32)
         }
         
@@ -97,7 +92,7 @@ class MenuTableViewCell: UITableViewCell {
         quantityLabel.text = "1"
         quantityLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalTo(decreaseButton.snp.trailing).offset(8)
+            make.leading.equalTo(decreaseButton.snp.trailing).offset(18)
             make.width.equalTo(20)
         }
         
@@ -112,13 +107,13 @@ class MenuTableViewCell: UITableViewCell {
         increaseButton.layer.shadowRadius = 1
         increaseButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalTo(quantityLabel.snp.trailing).offset(8)
+            make.leading.equalTo(quantityLabel.snp.trailing).offset(18)
             make.width.equalTo(32)
         }
         
         // 삭제 버튼
         deleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
-        deleteButton.tintColor = .darkGray
+        deleteButton.tintColor = .personal
         deleteButton.layer.cornerRadius = 16
         deleteButton.backgroundColor = .side
         deleteButton.layer.shadowColor = UIColor.black.cgColor
@@ -127,7 +122,7 @@ class MenuTableViewCell: UITableViewCell {
         deleteButton.layer.shadowRadius = 1
         deleteButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalTo(increaseButton.snp.trailing).offset(8)
+            make.leading.equalTo(increaseButton.snp.trailing).offset(25)
             make.width.height.equalTo(32)
         }
     }
