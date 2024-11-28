@@ -161,7 +161,12 @@ extension SpecialTableView {
         }
         updateTableViewHeight()
         
-        tableView.reloadData()
+        // 품목 추가 시 추가된 품목으로 스크롤 업데이트
+        if cart.count > 0 {
+            tableView.layoutIfNeeded()
+            let lastIndex = IndexPath(row: cart.count - 1, section: 0)
+            tableView.scrollToRow(at: lastIndex, at: .bottom, animated: true)
+        }
     }
     
     // 테이블 뷰 행 수
@@ -178,15 +183,12 @@ extension SpecialTableView {
         
         cell.selectionStyle = .none
         
+        // 3개 이상 품목이 담겨야 스크롤 가능
         if self.cart.count > 3 {
-            //스크롤이 가능하게 해라
             self.tableView.isScrollEnabled = true
         } else {
-            //스크롤이 불가능하게
             self.tableView.isScrollEnabled = false
         }
-        
-        
         
         // + 버튼에 Long Press 제스처 추가
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
