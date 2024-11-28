@@ -8,23 +8,6 @@
 import UIKit
 import SnapKit
 
-//// 메뉴 데이터 구조체 정의
-//enum MenuCategory {
-//    case burger
-//    case chicken
-//    case side
-//    case drink
-//    case vegan
-//}
-//
-//struct MenuData {
-//    var name: String
-//    var price: Int
-//    var image: UIImage?
-//    var category: MenuCategory
-//    var quantity: Int = 1 // 기본값: 1
-//}
-
 class MenuDataViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CardViewDelegate {
     
     let tableView = UITableView() // 테이블 뷰 선언

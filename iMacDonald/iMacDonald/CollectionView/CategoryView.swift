@@ -10,7 +10,7 @@ import SnapKit
 
 /// 카테고리 변경 델리게이트 프로토콜
 protocol CategoryViewDelegate: AnyObject {
-    func categoryDidChange(_ category: CollectionViewTestMenuCategory)
+    func categoryDidChange(_ category: Categorys)
 }
 
 /// 커스텀 카테고리뷰
@@ -18,7 +18,7 @@ final class CategoryView: UIView {
     
     private var collectionView: UICollectionView
     private let titleLogo = UILabel()
-    private var state: CollectionViewTestMenuCategory = .all
+    private var state: Categorys = .all
     private var currentState: Int = 0
     
     weak var delegate: CategoryViewDelegate?
@@ -101,7 +101,7 @@ private extension CategoryView {
 // 컬렉션뷰의 델리게이트 및 데이터소스 구현부
 extension CategoryView: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return CollectionViewTestMenuCategory.allCases.count
+        return Categorys.allCases.count  // CollectionViewTestMenuCategory를 Categorys로 변경
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
