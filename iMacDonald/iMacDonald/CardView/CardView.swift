@@ -71,7 +71,7 @@ class CardView: UIView {
         // 이미지가 버튼 크기에 맞게 조정되도록 설정
         button.imageView?.contentMode = .scaleAspectFit
         button.contentHorizontalAlignment = .fill
-        button.contentVerticalAlignment = .fill
+        button.contentVerticalAlignment = .top
         button.setImage(buttonImage, for: .normal)
         button.tintColor = UIColor(named: "PersonalColor")
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
@@ -97,6 +97,7 @@ class CardView: UIView {
         }
         // 가격 제약 조건
         priceLabel.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-5)
             make.top.equalTo(nameLabel.snp.bottom)
             make.leading.equalToSuperview().offset(10)
             make.height.equalToSuperview().multipliedBy(0.2)
@@ -104,6 +105,7 @@ class CardView: UIView {
         }
         // 버튼 제약 조건
         button.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-5)
             make.trailing.equalToSuperview().offset(-10) // 카드뷰 오른쪽에서 10pt
             make.centerY.equalTo(priceLabel.snp.centerY) // 가격과 수평
             make.width.equalToSuperview().multipliedBy(0.2) // 카드뷰 너비의 20%
