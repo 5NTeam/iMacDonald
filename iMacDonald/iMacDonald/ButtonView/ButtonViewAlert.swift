@@ -96,4 +96,40 @@ enum AlertManager {
         // 알럿을 화면에 표시
         viewController.present(alertController, animated: true)
     }
+    
+    static func showEasterEggsAlert(
+        from viewController: UIViewController,
+        title: String,
+        message: String,
+        confirmTitle: String = "5N"
+    ) {
+        // 알럿 컨트롤러 생성
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+        imageView.image = UIImage(named: "zep")
+        imageView.contentMode = .scaleAspectFit
+        
+        let customView = UIView(frame: CGRect(x: 35, y: 50, width: 200, height: 200))
+        customView.addSubview(imageView)
+        
+        alertController.view.addSubview(customView)
+        
+        // 확인 버튼 액션 생성
+        // .cancel 스타일을 사용하여 일반적인 확인 버튼임을 표시
+        let cancelAction = UIAlertAction(
+            title: confirmTitle,
+            style: .cancel
+        )
+        
+        // 알럿에 확인 버튼 추가
+        alertController.addAction(cancelAction)
+        
+        // 알럿을 화면에 표시
+        viewController.present(alertController, animated: true)
+    }
 }

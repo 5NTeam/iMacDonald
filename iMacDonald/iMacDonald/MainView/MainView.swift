@@ -193,6 +193,10 @@ private extension MainView {
 
 // MARK: - CategoryView Delegate
 extension MainView: CategoryViewDelegate {
+    func showEasterEggs() {
+        AlertManager.showEasterEggsAlert(from: self, title: "5N조를 소개합니다", message: "5명의 MBTI는 모두 N을 포함하고 있다!!\n\n\n\n\n\n\n\n\n\n")
+    }
+    
     /// 카테고리 선택이 변경되었을 때 호출되는 메서드
     func categoryDidChange(_ category: Categorys) {
         selectedCategory = category
