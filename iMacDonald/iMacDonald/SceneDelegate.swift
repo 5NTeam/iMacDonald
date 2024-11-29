@@ -22,9 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         // window 에게 루트 뷰 지정.
-        window.rootViewController = ViewController()
-        
         // 이 메서드를 반드시 작성해줘야 윈도우가 활성화 됨.
+        window.rootViewController = MainView()
         window.makeKeyAndVisible()
         self.window = window // 위의 var window 선언(넣어주겠다는 뜻)
     }
@@ -59,4 +58,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
+
 
