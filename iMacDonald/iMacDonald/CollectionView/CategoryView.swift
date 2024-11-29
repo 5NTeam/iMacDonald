@@ -16,6 +16,8 @@ protocol CategoryViewDelegate: AnyObject {
     /// 카테고리가 변경되었을 때 호출되는 메서드
     /// - Parameter category: 새로 선택된 카테고리
     func categoryDidChange(_ category: Categorys)
+    
+    func showEasterEggs()
 }
 
 /// 앱 상단의 카테고리 선택 UI를 구현한 커스텀 뷰
@@ -28,6 +30,9 @@ final class CategoryView: UIView {
     
     /// 앱 로고를 표시하는 레이블
     private let titleLogo = UILabel()
+    
+    private let easterEggsButton = UIButton()
+    private var easterEggsCount = 0
     
     /// 현재 선택된 카테고리 상태
     private var state: Categorys = .all
@@ -74,11 +79,33 @@ final class CategoryView: UIView {
     private func setupUIConfig() {
         setupLogo()          // 로고 설정
         setupCollectionView() // 컬렉션뷰 설정
+        setupEasterEggs()
     }
 }
 
 // MARK: - UI Setup Methods
 private extension CategoryView {
+    func setupEasterEggs() {
+        easterEggsButton.backgroundColor = .clear
+        easterEggsButton.addTarget(self, action: #selector(showEasterEggs), for: .touchDown)
+        self.addSubview(easterEggsButton)
+        
+        easterEggsButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()  // 가운데 정렬
+            $0.top.equalToSuperview()      // 상단에 배치
+            $0.height.equalTo(50)          // 높이 50pt
+        }
+    }
+    
+    @objc func showEasterEggs() {
+        guard self.easterEggsCount == 5 else {
+            self.easterEggsCount += 1
+            return
+        }
+        self.delegate?.showEasterEggs()
+        self.easterEggsCount = 0
+    }
+    
     /// 앱 로고 UI를 설정하는 메서드
     /// 'iMacDonald' 텍스트를 특정 스타일로 표시합니다.
     func setupLogo() {
