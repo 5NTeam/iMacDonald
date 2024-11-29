@@ -81,7 +81,7 @@ private extension MainView {
         // 버튼 뷰 제약조건 설정: 화면 하단에 고정, 높이 145pt
         buttonView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().offset(300)
             make.height.equalTo(145)
         }
     }
@@ -240,7 +240,7 @@ extension MainView: SpecialTableViewDelegate {
     /// 장바구니의 정보 레이블을 업데이트하는 메서드
     /// 총 수량과 금액을 업데이트합니다.
     func updateInfoLabel() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.2) {
             guard self.cartView.checkCartCount() > 0 else {
                 return
             }
@@ -253,12 +253,22 @@ extension MainView: SpecialTableViewDelegate {
     /// 장바구니 데이터가 변경되었을 때 호출되는 메서드
     /// 장바구니가 비어있으면 버튼 뷰를 숨깁니다.
     func sendTableViewCellData() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.2) {
             guard self.cartView.checkCartCount() > 0 else {
-                self.buttonView.isHidden = true
+                self.buttonView.frame.origin.y += 300
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.buttonView.isHidden = true
+                }
+                self.view.layoutIfNeeded()
                 return
             }
+            
+            self.buttonView.snp.makeConstraints {
+                $0.bottom.equalToSuperview()
+            }
             self.buttonView.isHidden = false
+            self.view.layoutIfNeeded()
         }
     }
 }

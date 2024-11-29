@@ -60,7 +60,9 @@ final class SpecialTableView: SpecialTable {
         tableView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.9)
         
         setupTableView()
-        tableView.isHidden = false
+        
+        // 테이블 뷰를 처음에는 숨김
+        tableView.isHidden = true
         
         // 스크롤 바 숨김 처리
         tableView.showsVerticalScrollIndicator = false
@@ -248,12 +250,12 @@ extension SpecialTableView {
             tableView.isHidden = false
         }
         
-        updateTableViewHeight()
-        
         self.sendDelegate?.sendTableViewCellData()
         self.sendDelegate?.updateInfoLabel()
         
-        // 새로운 메뉴 추가 시 해당 위치로 스크롤
+        updateTableViewHeight()
+        
+        // 품목 추가 시 추가된 품목으로 스크롤 업데이트
         if cart.count > 0 {
             tableView.layoutIfNeeded()
             let lastIndex = IndexPath(row: cart.count - 1, section: 0)

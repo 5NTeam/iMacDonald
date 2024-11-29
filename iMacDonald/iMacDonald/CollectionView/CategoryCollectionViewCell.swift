@@ -23,7 +23,7 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     /// 표시할 카테고리 목록
     /// 메뉴의 각 카테고리 이름을 담고 있는 배열입니다.
-    private let categoryList: [String] = ["All", "Burger", "Chicken", "Vegan", "Side", "Drink"]
+    private let categoryList: [String] = ["전체", "햄버거", "치킨", "비건 메뉴", "사이드메뉴", "음료"]
     
     /// 카테고리 이름을 표시하는 레이블
     /// 둥근 모서리와 배경색을 가진 버튼 형태로 스타일링됩니다.
