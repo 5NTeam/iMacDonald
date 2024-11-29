@@ -1,8 +1,16 @@
+//
+//  ButtonView.swift
+//  iMacDonald
+//
 /**
- * 작성자: 양정무
- * 파일명: ButtonView.swift
- * 기능: 결제 정보 표시 및 결제/취소 버튼을 포함하는 하단 뷰
- * 최종수정일: 2024.11.27
+ * @class ButtonView
+ * @description 주문 결제 화면의 하단에 표시되는 뷰입니다.
+ * - 주문 총 수량과 금액을 표시
+ * - 주문 취소와 결제 진행을 위한 버튼 제공
+ * - 접근성 지원을 위한 VoiceOver 레이블 포함
+ *
+ * @author 양정무
+ * @last_modified 2024.11.27
  */
 
 import UIKit
@@ -10,40 +18,48 @@ import SnapKit
 
 // MARK: - Delegate Protocol
 /**
- * 버튼 뷰의 버튼 동작을 처리하기 위한 델리게이트 프로토콜
+ * 버튼 뷰의 사용자 상호작용을 상위 뷰에 전달하기 위한 프로토콜
+ * 주문 취소와 결제 진행 이벤트를 처리합니다.
  */
 protocol ButtonViewDelegate: AnyObject {
-    /// 취소 버튼 탭 시 호출되는 메서드
+    /// 사용자가 취소 버튼을 탭했을 때 호출
+    /// 장바구니의 모든 항목을 삭제하는 동작을 수행합니다.
     func didTapCancelButton()
-    /// 결제 버튼 탭 시 호출되는 메서드
+    
+    /// 사용자가 결제 버튼을 탭했을 때 호출
+    /// 결제 프로세스를 시작하는 동작을 수행합니다.
     func didTapPaymentButton()
 }
 
+/// 결제 정보와 버튼을 표시하는 커스텀 뷰
 class ButtonView: UIView  {
     // MARK: - Constants
     /**
-     * 뷰에서 사용되는 상수값 모음
-     * cornerRadius: 버튼의 모서리 둥글기 값
-     * buttonHeight: 버튼의 높이
-     * horizontalPadding: 좌우 여백
-     * stackViewSpacing: 스택뷰 내부 아이템 간격
-     * fontSize: 기본 폰트 크기
-     * infoStackViewWidth: 정보 스택뷰의 너비
+     * 뷰의 레이아웃과 스타일링에 사용되는 상수값들
+     * 일관된 UI를 유지하고 유지보수를 용이하게 합니다.
      */
     private enum Constants {
+        /// 버튼의 모서리 둥글기 (25pt)
         static let cornerRadius: CGFloat = 25
+        /// 버튼의 기본 높이 (50pt)
         static let buttonHeight: CGFloat = 50
+        /// 좌우 여백 (16pt)
         static let horizontalPadding: CGFloat = 16
+        /// 스택뷰 내부 요소 간격 (12pt)
         static let stackViewSpacing: CGFloat = 12
+        /// 기본 폰트 크기 (16pt)
         static let fontSize: CGFloat = 16
+        /// 정보 스택뷰의 고정 너비 (350pt)
         static let infoStackViewWidth: CGFloat = 350
     }
     
     // MARK: - Properties
-    /// 체크아웃 뷰 델리게이트
+    /// 버튼 동작을 위임받을 델리게이트
     weak var delegate: ButtonViewDelegate?
     
-    /// 총 수량을 표시하는 레이블
+    // MARK: - UI Components
+    /// 총 주문 수량을 표시하는 레이블
+    /// "총 N개" 형식으로 표시됩니다.
     private let totalQuantityLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: Constants.fontSize, weight: .medium)
@@ -51,7 +67,8 @@ class ButtonView: UIView  {
         return label
     }()
     
-    /// 총 금액을 표시하는 레이블
+    /// 총 결제 금액을 표시하는 레이블
+    /// "N,NNN원" 형식으로 표시됩니다.
     private let totalAmountLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: Constants.fontSize, weight: .bold)
@@ -59,7 +76,7 @@ class ButtonView: UIView  {
         return label
     }()
     
-    /// 정보를 표시하는 수평 스택뷰
+    /// 수량과 금액 정보를 담는 수평 스택뷰
     private lazy var infoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -69,7 +86,8 @@ class ButtonView: UIView  {
         return stackView
     }()
     
-    /// 취소 버튼
+    /// 주문 취소 버튼
+    /// 테두리가 있는 흰색 배경의 버튼입니다.
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("취소", for: .normal)
@@ -79,22 +97,20 @@ class ButtonView: UIView  {
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.personal.cgColor
         button.layer.cornerRadius = Constants.cornerRadius
-        button.addTarget(self,
-                        action: #selector(cancelButtonTapped),
-                        for: .touchUpInside)
-        button.isUserInteractionEnabled = true  // 추가
+        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        button.isUserInteractionEnabled = true
         applyShadow(to: button)
         return button
     }()
     
-    // 다크모드 전환 시 호출되는 메서드
+    /// 다크모드 변경 시 테두리 색상 업데이트
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        // borderColor 업데이트
         cancelButton.layer.borderColor = UIColor.personal.cgColor
     }
     
     /// 결제 버튼
+    /// 강조색 배경의 버튼입니다.
     private lazy var paymentButton: UIButton = {
         let button = UIButton()
         button.setTitle("결제하기", for: .normal)
@@ -102,15 +118,13 @@ class ButtonView: UIView  {
         button.titleLabel?.font = .systemFont(ofSize: Constants.fontSize, weight: .bold)
         button.backgroundColor = UIColor.personal
         button.layer.cornerRadius = Constants.cornerRadius
-        button.addTarget(self,
-                        action: #selector(paymentButtonTapped),
-                        for: .touchUpInside)
-        button.isUserInteractionEnabled = true  // 추가
+        button.addTarget(self, action: #selector(paymentButtonTapped), for: .touchUpInside)
+        button.isUserInteractionEnabled = true
         applyShadow(to: button)
         return button
     }()
     
-    /// 버튼을 담는 수평 스택뷰
+    /// 취소와 결제 버튼을 포함하는 수평 스택뷰
     private let buttonStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -120,9 +134,10 @@ class ButtonView: UIView  {
     }()
     
     // MARK: - Lifecycle Methods
+    /// 뷰 초기화 메서드
     override init(frame: CGRect) {
         super.init(frame: frame)
-        isUserInteractionEnabled = true  // 추가
+        isUserInteractionEnabled = true
         setupUI()
         setupAccessibility()
     }
@@ -134,6 +149,7 @@ class ButtonView: UIView  {
     // MARK: - Private Methods
     /**
      * UI 초기 설정을 수행하는 메서드
+     * 배경색 설정 및 하위 뷰 구성을 담당합니다.
      */
     private func setupUI() {
         backgroundColor = .systemBackground
@@ -142,7 +158,8 @@ class ButtonView: UIView  {
     }
     
     /**
-     * 서브뷰들을 구성하고 추가하는 메서드
+     * 서브뷰들을 구성하고 계층 구조를 설정하는 메서드
+     * 스택뷰에 레이블과 버튼들을 추가합니다.
      */
     private func configureSubviews() {
         self.addSubview(infoStackView)
@@ -156,6 +173,7 @@ class ButtonView: UIView  {
     
     /**
      * 오토레이아웃 제약조건을 설정하는 메서드
+     * SnapKit을 사용하여 뷰의 레이아웃을 정의합니다.
      */
     private func setupConstraints() {
         infoStackView.snp.makeConstraints { make in
@@ -174,23 +192,17 @@ class ButtonView: UIView  {
     
     /**
      * 접근성 레이블을 설정하는 메서드
+     * VoiceOver 사용자를 위한 접근성 레이블을 설정합니다.
      */
     private func setupAccessibility() {
-        // 취소 버튼을 눌렀을 때 "주문 취소하기"라고 읽어줍니다
         cancelButton.accessibilityLabel = "주문 취소하기"
-        
-        // 결제 버튼을 눌렀을 때 "결제 진행하기"라고 읽어줍니다
         paymentButton.accessibilityLabel = "결제 진행하기"
-        
-        // 수량 표시 부분을 읽을 때 "총 주문 수량"이라고 읽어줍니다
         totalQuantityLabel.accessibilityLabel = "총 주문 수량"
-        
-        // 금액 표시 부분을 읽을 때 "총 결제 금액"이라고 읽어줍니다
         totalAmountLabel.accessibilityLabel = "총 결제 금액"
     }
     
     /**
-     * 버튼에 그림자를 적용하는 메서드
+     * 버튼에 그림자 효과를 적용하는 메서드
      * - Parameter button: 그림자를 적용할 버튼
      */
     private func applyShadow(to button: UIButton) {
@@ -203,15 +215,16 @@ class ButtonView: UIView  {
     // MARK: - Action Methods
     /**
      * 취소 버튼 탭 이벤트 처리 메서드
+     * 델리게이트를 통해 취소 이벤트를 전달합니다.
      */
     @objc private func cancelButtonTapped() {
         print("ButtonView: Cancel button tapped")
         delegate?.didTapCancelButton()
     }
-
     
     /**
      * 결제 버튼 탭 이벤트 처리 메서드
+     * 델리게이트를 통해 결제 이벤트를 전달합니다.
      */
     @objc private func paymentButtonTapped() {
         print("ButtonView: Payment button tapped")
@@ -241,15 +254,17 @@ class ButtonView: UIView  {
 // MARK: - Extensions
 /**
  * Int 타입에 대한 확장
- * 숫자 포맷팅 기능 추가
+ * 숫자를 천 단위 구분자가 포함된 문자열로 변환하는 기능을 추가합니다.
  */
 extension Int {
+    /// 천 단위 구분자를 위한 NumberFormatter
     private static let numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         return formatter
     }()
     
+    /// 천 단위 구분자가 포함된 문자열로 변환하는 계산 프로퍼티
     var formattedWithSeparator: String {
         return Int.numberFormatter.string(from: NSNumber(value: self)) ?? "\(self)"
     }
