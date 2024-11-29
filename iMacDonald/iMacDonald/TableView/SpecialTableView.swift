@@ -42,7 +42,7 @@ final class SpecialTableView: SpecialTable {
         setupTableView()
         
         // 테이블 뷰를 처음에는 숨김
-        tableView.isHidden = false
+        tableView.isHidden = true
         
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
@@ -220,10 +220,10 @@ extension SpecialTableView {
             tableView.isHidden = false
         }
         
-        updateTableViewHeight()
-        
         self.sendDelegate?.sendTableViewCellData()
         self.sendDelegate?.updateInfoLabel()
+        
+        updateTableViewHeight()
         
         // 품목 추가 시 추가된 품목으로 스크롤 업데이트
         if cart.count > 0 {

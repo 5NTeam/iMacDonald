@@ -204,14 +204,14 @@ extension MainView: SpecialTableViewDelegate {
     }
     
     func sendTableViewCellData() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.2) {
             guard self.cartView.checkCartCount() > 0 else {
                 self.buttonView.frame.origin.y += 300
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     self.buttonView.isHidden = true
                 }
-                
+                self.view.layoutIfNeeded()
                 return
             }
             
@@ -219,6 +219,7 @@ extension MainView: SpecialTableViewDelegate {
                 $0.bottom.equalToSuperview()
             }
             self.buttonView.isHidden = false
+            self.view.layoutIfNeeded()
         }
     }
 }
