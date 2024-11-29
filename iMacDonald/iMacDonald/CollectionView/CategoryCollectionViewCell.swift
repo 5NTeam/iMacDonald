@@ -13,7 +13,7 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     static let identifier: String = "CategoryCollectionViewCell"
     
     // 카테고리 이름
-    private let categoryList: [String] = ["All", "Burger", "Chicken", "Vegan", "Side", "Drink"]
+    private let categoryList: [String] = ["전체", "햄버거", "치킨", "비건 메뉴", "사이드메뉴", "음료"]
     
     // 카테고리의 레이블 값 정의
     private let categoryLabel: UILabel = {
