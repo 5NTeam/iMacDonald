@@ -44,7 +44,7 @@ _iMacDonald?_
 - 💪 개인 역량 강화
 - 🤼 팀워크 향상
 
-## 🍆Branch Rules & Strategies
+## 🍆 Branch Rules & Strategies
 
 ![image](https://github.com/user-attachments/assets/dbb0346b-c378-43e2-9c3b-ba04d6e59d20)
 
@@ -79,7 +79,7 @@ _iMacDonald?_
     - 불필요한 브랜치 삭제
     - README 수정
 
-## 📓Github 커밋 컨벤션 가이드 (이모지 버전) 
+## 📓 Github 커밋 컨벤션 가이드 (이모지 버전) 
 
 ### 기본 커밋 타입 
 - ✨ `feat` : 새로운 기능 추가
@@ -98,3 +98,69 @@ _iMacDonald?_
 - 🔀 `merge` : 합병
 - ⏪️ `revert` : 되돌리기
 
+## ⚽️ Troubleshooting
+
+### 🚨 1. 메인뷰 오토레이아웃 문제
+- **문제**: 메뉴를 담은 카드뷰가 메인뷰에 배치될 때 구성요소들의 오토레이아웃이 틀어지는 문제 발생
+- **해결**: 카드뷰 구성 요소들을 카드뷰의 비율로 설정하여 해결
+```swift
+make.height.equalToSuperview().multipliedBy(0.6)
+```
+
+### 🚨 2. 카드뷰의 BoderColor가 동적으로 업데이트되지 않는 문제
+- **문제**: `layer.borderColor`가 동적으로 업데이트 되지 않는 문제가 발생
+- **해결**: iOS 버전에 맞는 보더 컬러 업데이트 로직을 구현하여 해결
+```swift
+// MARK: - Dark Mode Handling
+    /// 다크모드 변경 감지 시 호출되는 메서드
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            updateBorderColor()
+        }
+    }
+    
+    /// 테마에 따른 테두리 색상 업데이트 메서드
+    private func updateBorderColor() {
+        self.layer.borderColor = UIColor(named: "CardViewShadowColor")?.cgColor
+    }
+    
+    /// iOS 17 이상에서 테마 변경 감지 설정 메서드
+    private func registerTraitChangeHandler() {
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, previousTraitCollection: UITraitCollection) in
+                self.updateBorderColor()
+            }
+        }
+    }
+```
+
+### 🚨 3. 테이블뷰 Index out of range
+- **문제**: 테이블뷰에서 셀을 제거하는 액션에서 삭제 순서(row.index)에 따라 앱이 크래시되는 현상 발생
+- **해결**: 셀 제거 액션을 수정하고 테이블뷰에서 제거된 행을 삭제하는 코드를 사용하여 오류 해결
+```swift
+cart.remove(at: row) // 삭제 액션 실행시 배열에서 인덱스 제거
+
+// 테이블뷰에서 제거한 행을 삭제
+tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .none)
+```
+
+### 🚨 4. 다크모드/라이트모드 전환시에도 뷰 배경색상이 변하지 않음
+- **문제**: 다크모드나 라이트모드로 설정을 변경해도 뷰의 배경색이 고정되어 변하지 않음
+- **해결**: 배경색상의 컬러를 `UIColor.systemBackground`로 사용하거나 `Asset`에서 색상을 정의하여 사용
+
+### 🚨 5. 메인뷰 스크롤 영역 침범
+- **문제**: 메인뷰에서 테이블뷰가 보이지 않을 때도 테이블뷰가 차지하는 영역만큼 스크롤이 되지 않는 문제 발생
+- **해결 1**: 테이블뷰의 `height`를 0으로 설정하고 셀이 업데이트 될 때만 `height` 값이 늘어나도록 설정 -> `height` 값이 계속 0으로 고정되어 테이블뷰가 터치되지 않는 문제 발생
+- **해결 2**: 테이블뷰를 `Hidden`으로 설정하고 셀이 추가될 때만 보이도록 설정 -> 테이블뷰 셀이 1개일 때도 테이블뷰 영역 전체가 메인뷰에 영향을 미쳐 스크롤되지 않는 현상 발생
+- **해결 3**: 튜터님께 피드백을 받아 `hitTest`메소드를 활용하여 테이블뷰의 셀이 비어있지 않을 때만 터치가 가능하도록 설정.
+```swift
+ /// 터치 이벤트 처리를 위한 메서드
+    /// 테이블뷰 영역 외의 터치는 무시하도록 구현
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard !tableView.frame.contains(point) else {
+            return super.hitTest(point, with: event)
+        }
+        return nil
+    }
+``` 
